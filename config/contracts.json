@@ -1,0 +1,13 @@
+{
+  "default": {
+    "gas": 1500000,
+    "contracts": {
+      "user": {
+      	    "args": []
+      },
+      "PaperCopyright": {
+	    "args": []
+      }
+    }
+  }
+}

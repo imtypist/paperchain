@@ -1,0 +1,43 @@
+{
+  "0x19425866b7d3298a15ad79accf302ba9d21859174e7ae99ce552e05f13f0efa3": {
+    "name": "privatenet",
+    "contracts": {
+      "0x0534bb40ca0fd7a46407dbdb0bdd64cbea110181e4bdae9300522c96b264aeea": {
+        "address": "0x380abd7fd4223bb84aa83f788d030326545bd550",
+        "name":    "PaperCopyright"
+      },
+      "0x2e07dbb49eeb209094b5f1ef39db7954ba6167e9a218a1fc6cb4c88447d8cdc0": {
+        "address": "0x3ea4b7225bb64df5f8e717113c3a3c7cd762d311",
+        "name":    "PaperCopyright"
+      },
+      "0x5710f7d447695a40c0740e8a839da53ba61ab4ae62022d700d28fc2e5ee824f6": {
+        "address": "0x04aa4e020c3389d32deb4bd3c56cd1935b404802",
+        "name":    "PaperCopyright"
+      },
+      "0x78bdc8812ee7765e00ed97f87454262ee627e3103d6241453d19f2469388881a": {
+        "address": "0x147675eecb7ae48f32c15c16d86cdfda31869b59",
+        "name":    "PaperCopyright"
+      },
+      "0x7facd6c97d4a5b914387871111d71568c5a0f2a7cd28b9aa17683ea279ef0c7b": {
+        "address": "0x4974c0351af606ad509123cc7abd2f41b0b6a9d3",
+        "name":    "user"
+      },
+      "0xb35104588f465221786ebcac26678a71d2450e04d7c0c2e4611e76096c2eaad5": {
+        "address": "0xec1913118f0604244dacfc5bb7b961c073d05dfe",
+        "name":    "checker"
+      },
+      "0xb90143775bdde163d29e3e25bb043c6d38027f22788ab77c74dc158abacaf863": {
+        "address": "0x6b5a4fcf4003d2246fb5675268c958a2f90314a9",
+        "name":    "PaperCopyright"
+      },
+      "0xe6bc3cedab4182782f908ab2a88a0c223c1442967d5fb5879bbb68770d9c1a4b": {
+        "address": "0xd89703d8d805471c254b7b9174565d22875cf634",
+        "name":    "checker"
+      },
+      "0xff721b194a3147c43137cf4ec0e3264ece59d76bf6d1abd3e84f988ef74d7a98": {
+        "address": "0xca7e6e7f1f3c0b8c4d770573a5d36dfc53696706",
+        "name":    "checker"
+      }
+    }
+  }
+}
