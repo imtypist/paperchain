@@ -6,8 +6,16 @@
         "address": "0x380abd7fd4223bb84aa83f788d030326545bd550",
         "name":    "PaperCopyright"
       },
+      "0x27eff1fea03df3fc94c2a0ee3b949ed576fa628b001e1c147dea1ef4acd80623": {
+        "address": "0x4387a77e5ac470f67dbf67856207034e6d5a89cb",
+        "name":    "user"
+      },
       "0x2e07dbb49eeb209094b5f1ef39db7954ba6167e9a218a1fc6cb4c88447d8cdc0": {
         "address": "0x3ea4b7225bb64df5f8e717113c3a3c7cd762d311",
+        "name":    "PaperCopyright"
+      },
+      "0x46361678700fa946b33cee7b7b2ddebacae8da2a66383489edda1428afbb4e52": {
+        "address": "0xd5d6b2670a43437c6ba43462f10dfb25e25efc1c",
         "name":    "PaperCopyright"
       },
       "0x5710f7d447695a40c0740e8a839da53ba61ab4ae62022d700d28fc2e5ee824f6": {

@@ -1,11 +1,13 @@
 {
   "default": {
-    "gas": 1500000,
+    "gas": "auto",
     "contracts": {
       "user": {
+	    "gas": 4500000,
       	    "args": []
       },
       "PaperCopyright": {
+	    "gas": 1500000,
 	    "args": []
       }
     }
