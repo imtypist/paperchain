@@ -28,6 +28,7 @@ $(function () {
     					$("#txing").attr("id","login");
     					if(val == true){
     						alert("success!");
+    						window.location.href = "./home.html";
     					}else{
     						alert("failure!");
     					}
