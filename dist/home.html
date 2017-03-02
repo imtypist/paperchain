@@ -83,7 +83,7 @@
                                                                             <a href="#" data-reactid="82"><img src="img/dfd0d060e3faa7389f95f50cd47e4e8a(1).png" class="styles__avatar___100-x img-rounded" style="max-width:;max-height:;width:;height:;" alt="liyuan" data-reactid="83"></a>
                                                                         </div>
                                                                         <div class="col-md-8 col-sm-12 col-xs-8" data-reactid="84">
-                                                                            <a class="Profile__name___2Lnfx" href="#" data-reactid="85">liyuan</a>
+                                                                            <a class="Profile__name___2Lnfx" id="username" href="#" data-reactid="85">username</a>
                                                                             <div class="Profile__headline___29eV0" data-reactid="86">
                                                                             </div>
                                                                             <div class="Profile__location___1aLWY" data-reactid="87">
@@ -100,7 +100,7 @@
                                                                     <div class="styles__nav___2ZL09 " data-reactid="93">
                                                                         <div class="col-md-2 col-xs-4" data-reactid="94">
                                                                             <a class="stat-link"  data-reactid="95">
-                                                                                <div class="stat-number noop-class" data-reactid="96">
+                                                                                <div class="stat-number noop-class" id="paperNumber" data-reactid="96">
                                                                                     0
                                                                                 </div>
                                                                                 <div class="stat-label" data-reactid="97">
@@ -162,13 +162,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-12" id="noPaper">
                                                         <img src="img/register.png" srcset="/assets/register@2x.png 2x" role="presentation" class="pull-right" width="178">
                                                         <h3>您目前还没有声明版权</h3>
                                                         <p>
                                                         </p>
                                                         <p>
-                                                            Blockai is a home for your copyrights. Claim all your copyrights to protect them and find out who is using them. We also will give you ways to make money with your copyrights!
+                                                            Blockcp2 is a home for your copyrights. Claim all your copyrights to protect them and find out who is using them. We also will give you ways to make money with your copyrights!
                                                         </p>
                                                         <p>
                                                             Get started claiming by dragging images anywhere on this page or clicking the box above.
@@ -180,7 +180,7 @@
                                                     <div>
                                                         <div class="styles__grid___1EiKF">
                                                             <div class="row">
-                                                                <div class="col-sm-3 col-xs-4">
+                                                                <div class="col-sm-3 col-xs-4" style="display: none;" class="paperList">
                                                                     <div class="styles__copyright-grid-item___2xKWT">
                                                                         <div class="styles__preview___cr04x">
                                                                             <div class="styles__square___3aUg3">
@@ -384,7 +384,7 @@
                                                 and
                                             </div>
                                             <div class="local__choose___3D7mr">
-                                                <button class="btn btn-lg btn-primary">选择文件</button>
+                                                <button class="btn btn-lg btn-primary" id="selectFile">选择文件</button>
                                             </div>
                                             <div class="local__alsoChoose___2W8g-">
                                                 you can also chose a file from
@@ -392,7 +392,7 @@
                                             <div>
                                                 <button class="btn btn-link">Web URL</button>
                                             </div>
-                                            <input type="file" multiple="" style="display: none;">
+                                            <input type="file" multiple="" style="display: none;" id="fileContainer">
                                         </div>
                                     </div>
                                 </div>
@@ -401,10 +401,10 @@
                                     <div class="col-sm-3 col-xs-0">
                                     </div>
                                     <div class="summary-footer__middleMessage___1C86h col-sm-6 col-xs-9">
-                                       You have selected<strong>0</strong>files
+                                       You have selected<strong id="fileName">0</strong>file
                                     </div>
                                     <div class="summary-footer__ctaButton___1kl1R col-xs-3">
-                                        <button disabled="" type="button" class="btn btn-lg btn-primary">Upload</button>
+                                        <button type="button" class="btn btn-lg btn-primary" id="uploadFile">Upload</button>
                                     </div>
                                 </div>
                             </div>

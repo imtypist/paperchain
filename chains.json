@@ -30,6 +30,10 @@
         "address": "0x04aa4e020c3389d32deb4bd3c56cd1935b404802",
         "name":    "PaperCopyright"
       },
+      "0x5a505c110bc06d8ad0f0e86f34d77c1d2c009d0cd04737a655fe08d8762f7124": {
+        "address": "0x16431102a23fd3506c25e12eb2aeaa76729a0a57",
+        "name":    "user"
+      },
       "0x62c528686e9cd5f1cc50eb61df0b50fd5dfd7bd1c6586eb96799df5137a32909": {
         "address": "0x80dad46e0529c7dd8635eb7b3a18bef5d4caf86c",
         "name":    "PaperCopyright"
@@ -96,6 +100,10 @@
       },
       "0xf8c3fbd75c6772e19b77773843f358199782b9ef7407ed284f48e82da129db13": {
         "address": "0x170dd810293b58ed01ce0305235ae2fbc6d795df",
+        "name":    "PaperCopyright"
+      },
+      "0xfda762b2b88e7a665040ff67d79b156c2437eb70a8695d2aba96008bd2cf9591": {
+        "address": "0x275ea9e669bab2c7769dc7236c2c672f812f00b1",
         "name":    "PaperCopyright"
       },
       "0xff721b194a3147c43137cf4ec0e3264ece59d76bf6d1abd3e84f988ef74d7a98": {

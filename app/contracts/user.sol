@@ -1,7 +1,7 @@
 pragma solidity ^0.4.7;
 contract user {
   struct userInfo {
-    bytes20 paper;
+    address paper;
     uint register;
     uint wallet;
     string username;
@@ -93,19 +93,19 @@ contract user {
     }
   }
   
-  function setPaperAddr(string ss, bytes20 uid, bytes20 addr) checker(ss, uid) {
+  function setPaperAddr(string ss, bytes20 uid, address addr) checker(ss, uid) {
     userInfo u = users[uid];
     if(u.paper == 0x00) {
       u.paper = addr;
     }
   }
 
-  function getOtherUserInfo(bytes20 uid) constant returns(bytes20, uint, string, string) {
+  function getOtherUserInfo(bytes20 uid) constant returns(address, uint, string, string) {
     userInfo u = users[uid];
     return (u.paper,u.register,u.username,u.email);
   }
   
-  function getMyInfo(string ss, bytes20 uid) constant checker(ss, uid) returns(bytes20, uint, uint, string, string) {
+  function getMyInfo(string ss, bytes20 uid) constant checker(ss, uid) returns(address, uint, uint, string, string) {
     userInfo u = users[uid];
     return (u.paper,u.register,u.wallet,u.username,u.email);
   }
