@@ -78072,7 +78072,7 @@ var EmbarkJS =
 	  contractParams.push({
 	    from: this.web3.eth.accounts[0],
 	    data: '0x' + this.code,
-	    gas: 1500000,
+	    gas: 500000,
 	    gasPrice: 10000000000000
 	  });
 
@@ -84166,7 +84166,6 @@ var EmbarkJS =
 
 /***/ }
 /******/ ]);
-
 
 if (typeof web3 !== 'undefined' && typeof Web3 !== 'undefined') {
 	web3 = new Web3(web3.currentProvider);
