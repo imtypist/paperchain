@@ -6,8 +6,16 @@
         "address": "0x380abd7fd4223bb84aa83f788d030326545bd550",
         "name":    "PaperCopyright"
       },
+      "0x2760f7d4ea7a8d349ffa998555a4f9c06cb21d36f74d1a25d8785e64dad0e0c3": {
+        "address": "0xc7ffd52e13957a5e3f86a8e8c1062886811a5233",
+        "name":    "PaperCopyright"
+      },
       "0x27eff1fea03df3fc94c2a0ee3b949ed576fa628b001e1c147dea1ef4acd80623": {
         "address": "0x4387a77e5ac470f67dbf67856207034e6d5a89cb",
+        "name":    "user"
+      },
+      "0x2df2a44df9a20bd0aefe6e2d4f3079ac7059c25640cbd7477db557b048879bb8": {
+        "address": "0x750540441249833beba1713084a75a7168e80f80",
         "name":    "user"
       },
       "0x2e07dbb49eeb209094b5f1ef39db7954ba6167e9a218a1fc6cb4c88447d8cdc0": {
@@ -22,12 +30,44 @@
         "address": "0x04aa4e020c3389d32deb4bd3c56cd1935b404802",
         "name":    "PaperCopyright"
       },
+      "0x62c528686e9cd5f1cc50eb61df0b50fd5dfd7bd1c6586eb96799df5137a32909": {
+        "address": "0x80dad46e0529c7dd8635eb7b3a18bef5d4caf86c",
+        "name":    "PaperCopyright"
+      },
+      "0x73dad4135e40c34952e0d9cf9f1a428455927f710275b943b840fa18a8f3b2b6": {
+        "address": "0x3dadbbebfc2289328d848810bb95de75fe1b1853",
+        "name":    "user"
+      },
       "0x78bdc8812ee7765e00ed97f87454262ee627e3103d6241453d19f2469388881a": {
         "address": "0x147675eecb7ae48f32c15c16d86cdfda31869b59",
         "name":    "PaperCopyright"
       },
+      "0x7a9a7a33ab57099aa1574aa5248c705564c5d1b68c0b9da62b61c4832dff88b3": {
+        "address": "0x4bdf961c354d6f6e688ea8b5932720f997df1fcd",
+        "name":    "user"
+      },
       "0x7facd6c97d4a5b914387871111d71568c5a0f2a7cd28b9aa17683ea279ef0c7b": {
         "address": "0x4974c0351af606ad509123cc7abd2f41b0b6a9d3",
+        "name":    "user"
+      },
+      "0x8a0173474e95fab571f38b9a0f8663281e68dc6eb47c627f35e74c0bb006eea7": {
+        "address": "0x19363805b5bc3548bb602543e24fc5e3f114a383",
+        "name":    "PaperCopyright"
+      },
+      "0x9bd3a64376e8a5f6b0d1cf91c9d82fc10c3bb0e4f22410bb6c5aa8d7795bdecd": {
+        "address": "0x053420c7b3a1dcf55f33b77906ddf3e41c6c522c",
+        "name":    "PaperCopyright"
+      },
+      "0xaa24f8781557bacbfa9c8908406635612baa80ba83be4862e99eb6da12462277": {
+        "address": "0x6e3662c553cfd5d381c12d50072ec03a99e44a8a",
+        "name":    "user"
+      },
+      "0xabdf61aaa8ec7e957d3974df9c144d0cc2c8c0b2aee2219b3cc39614db06e5c9": {
+        "address": "0xc67bf7811a8ac972e8e960e0ad31ad624fef453a",
+        "name":    "PaperCopyright"
+      },
+      "0xaeff741ef377bd8aca03d8313bba33d506b96a160b59d3a4383313d09f4f6b2c": {
+        "address": "0xcc5c30bc0fde7bc93d78e7cb3d170eed682e785f",
         "name":    "user"
       },
       "0xb35104588f465221786ebcac26678a71d2450e04d7c0c2e4611e76096c2eaad5": {
@@ -38,9 +78,25 @@
         "address": "0x6b5a4fcf4003d2246fb5675268c958a2f90314a9",
         "name":    "PaperCopyright"
       },
+      "0xbfba1d65e39089014168568f6d391d5fc8865a60c9d905248c2279c4b580e8eb": {
+        "address": "0xa34d8cea04c8dd965c870eba33ceebf82aa7866f",
+        "name":    "user"
+      },
+      "0xc8934532d552843d02fd1a37d53ea7fa3056d686b2e411b2df5d92aa3b3f9cab": {
+        "address": "0x0835121bf3cd7d46ee5893273a0649e5a1355ed1",
+        "name":    "PaperCopyright"
+      },
+      "0xe13f211013d9796433a55c079b7bab0b946febaf49ad411e24b590463c54fde8": {
+        "address": "0x425f6fa924a0cd67aff72a4a0635820d9fcbba38",
+        "name":    "user"
+      },
       "0xe6bc3cedab4182782f908ab2a88a0c223c1442967d5fb5879bbb68770d9c1a4b": {
         "address": "0xd89703d8d805471c254b7b9174565d22875cf634",
         "name":    "checker"
+      },
+      "0xf8c3fbd75c6772e19b77773843f358199782b9ef7407ed284f48e82da129db13": {
+        "address": "0x170dd810293b58ed01ce0305235ae2fbc6d795df",
+        "name":    "PaperCopyright"
       },
       "0xff721b194a3147c43137cf4ec0e3264ece59d76bf6d1abd3e84f988ef74d7a98": {
         "address": "0xca7e6e7f1f3c0b8c4d770573a5d36dfc53696706",
