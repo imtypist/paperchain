@@ -20,9 +20,9 @@ $(function () {
     	console.log(uuid,email,passwd,session);
     	user.login(uuid,email,passwd,session,{gas:500000}).then(function(res){
     		var q = setInterval(function(){
-    			var currentBlock = web3.eth.blockNumber;
+                var currentBlock = web3.eth.blockNumber;
     			var txBlock = web3.eth.getTransaction(res).blockNumber;
-    			if(currentBlock - txBlock >= 2 && txBlock != null){
+    			if(txBlock != null && currentBlock - txBlock >= 1){
     				clearInterval(q);
     				user.query(session,uuid).then(function(val){
     					$("#txing").attr("id","login");

@@ -19,7 +19,7 @@ $(function () {
             var tx = setInterval(function(){
                 var currentBlock = web3.eth.blockNumber;
                 var txBlock = web3.eth.getTransaction(res).blockNumber;
-                if(txBlock != null && currentBlock - txBlock >= 2){
+                if(txBlock != null && currentBlock - txBlock >= 1){
                     clearInterval(tx);
                     $("#txing").attr("id","register");
                     localStorage.setItem("uid",uid);

@@ -6,7 +6,7 @@
     "img/": ["app/img/**"],
     "js/index.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/jquery.immersive-slider.min.js", "app/js/index.js"],
     "js/change.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/change.js"],
-    "js/home.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/home.js"],
+    "js/home.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/_vendor/avalon.min.js", "app/js/home.js"],
     "js/login.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/Login.js"],
     "js/signUp.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/Sign_Up.js"],
     "index.html": "app/html/index.html",

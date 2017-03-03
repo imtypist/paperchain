@@ -100,14 +100,14 @@ contract user {
     }
   }
 
-  function getOtherUserInfo(bytes20 uid) constant returns(address, uint, string, string) {
+  function getOtherUserInfo(bytes20 uid) constant returns(address, uint, string, string, string, string, string) {
     userInfo u = users[uid];
-    return (u.paper,u.register,u.username,u.email);
+    return (u.paper,u.register,u.username,u.email,u.avatar,u.bio,u.location);
   }
   
-  function getMyInfo(string ss, bytes20 uid) constant checker(ss, uid) returns(address, uint, uint, string, string) {
+  function getMyInfo(string ss, bytes20 uid) constant checker(ss, uid) returns(address, uint, uint, string, string, string, string, string) {
     userInfo u = users[uid];
-    return (u.paper,u.register,u.wallet,u.username,u.email);
+    return (u.paper,u.register,u.wallet,u.username,u.email,u.avatar,u.bio,u.location);
   }
   
   function compare(string storage _a, string memory _b) internal returns (bool) {

@@ -26,6 +26,14 @@
         "address": "0xd5d6b2670a43437c6ba43462f10dfb25e25efc1c",
         "name":    "PaperCopyright"
       },
+      "0x4e86126725cc2819b1321ef01111b38a1f3382552a41b61d5a892136015567fa": {
+        "address": "0x53ca520b5cc489d9d8f3d8dd79b7fe9dd5354025",
+        "name":    "PaperCopyright"
+      },
+      "0x51de5cfd9cd7ba83a1d2fb10cafc93729658c009f36a46753e307626dd6e42ac": {
+        "address": "0x15ca26c75f0cf20a06fa70bea6fac34d1a36f674",
+        "name":    "user"
+      },
       "0x5710f7d447695a40c0740e8a839da53ba61ab4ae62022d700d28fc2e5ee824f6": {
         "address": "0x04aa4e020c3389d32deb4bd3c56cd1935b404802",
         "name":    "PaperCopyright"
