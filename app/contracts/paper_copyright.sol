@@ -8,18 +8,18 @@ contract PaperCopyright {
     bool isPublic;
   }
 
-  address public creator;
+  bytes20 private creator;
 
-  Paper[] public papers;
+  Paper[] private papers;
 
   uint public len = 0;
 
-  function PaperCopyright() {
-    creator = msg.sender;
+  function PaperCopyright(bytes20 sender) {
+    creator = sender;
   }
 
-  function addPaper(string author,string file,string title,bool isPublic) {
-    if(msg.sender != creator) throw;
+  function addPaper(bytes20 sender,string author,string file,string title,bool isPublic) {
+    if(sender != creator) throw;
     papers.push(Paper({
       author: author,
       fileHash: file,
@@ -30,8 +30,8 @@ contract PaperCopyright {
     len += 1;
   }
 
-  function editPaper(uint index,string author,string file,string title,bool isPublic) {
-    if(msg.sender != creator) throw;
+  function editPaper(bytes20 sender,uint index,string author,string file,string title,bool isPublic) {
+    if(sender != creator) throw;
     papers[index] = Paper({
       author: author,
       fileHash: file,
@@ -41,8 +41,8 @@ contract PaperCopyright {
     });
   }
   
-  function deletePaper(string fileHash) {
-    if(msg.sender != creator) throw;
+  function deletePaper(bytes20 sender,string fileHash) {
+    if(sender != creator) throw;
     for(var i = 0;i < len;i++) {
         if(compare(papers[i].fileHash,fileHash)) {
             Paper p = papers[len-1];
@@ -57,6 +57,21 @@ contract PaperCopyright {
             len --;
             break;
         }
+    }
+  }
+
+  function getPaperInfo(bytes20 sender,uint index) constant returns(string,string,string,uint,bool){
+    if(sender != creator) throw;
+    Paper p = papers[index];
+    return (p.author,p.fileHash,p.title,p.date,p.isPublic);
+  }
+
+  function getPaperInfo(uint index) constant returns(string,string,string,uint){
+    Paper p = papers[index];
+    if(p.isPublic){
+      return (p.author,p.fileHash,p.title,p.date);
+    }else{
+      return ('false','false','false',0);
     }
   }
   
