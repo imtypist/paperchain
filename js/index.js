@@ -40,6 +40,12 @@ $(function(){
 		$("#profile").addClass("iron-selected");
 	});
 
+	$(document).on("click","#logout",function(){
+		$("#profile").removeClass("iron-selected");
+		$("#intro").addClass("iron-selected");
+		slidePage("blackcolor",true,"yellowback","vaultPage","welcome","none","blueback");
+	});
+
 	$(document).on("click","#profile .topbar iron-icon:eq(0)",function(){
 		$("#profile").removeClass("iron-selected");
 		$("#home").addClass("iron-selected");
