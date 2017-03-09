@@ -9,6 +9,8 @@ contract user {
     string avatar;
     string bio;
     string location;
+    uint buy;
+    uint sell;
   }
   
   struct authority {
@@ -17,6 +19,18 @@ contract user {
     uint lastTime;
     bool isLogin;
   }
+  
+  struct txInfo {
+    bytes20 buyer;
+    bytes20 seller;
+    uint price;
+    string fileHash;
+    uint txDate;
+  }
+  
+  mapping (bytes20 => txInfo[]) private txBuyer;
+  
+  mapping (bytes20 => txInfo[]) private txSeller;
 
   mapping (bytes20 => userInfo) public users;
   
@@ -48,7 +62,9 @@ contract user {
       email: email,
       avatar: "ipfs url",
       bio: "",
-      location: ""
+      location: "",
+      buy:0,
+      sell:0
     });
     rbac[uid] = authority({
       pid: sha3(pid),
@@ -99,6 +115,27 @@ contract user {
       u.paper = addr;
     }
   }
+  
+  function paperTx(string ss, bytes20 uid, bytes20 seller, uint price, string fileHash) checker(ss, uid) {
+    txInfo memory tx = txInfo({
+        buyer:uid,
+        seller:seller,
+        price:price,
+        fileHash:fileHash,
+        txDate:now
+    });
+    txBuyer[uid].push(tx);
+    users[uid].buy += 1;
+    txSeller[seller].push(tx);
+    users[seller].sell += 1;
+  }
+  
+  // function doneTx(string ss, bytes20 uid, uint index, bool result) checker(ss,uid) {
+  //   txInfo tx = txSeller[uid][index];
+  //   if(result){
+        
+  //   }
+  // }
 
   function getOtherUserInfo(bytes20 uid) constant returns(address, uint, string, string, string, string, string) {
     userInfo u = users[uid];
@@ -108,6 +145,11 @@ contract user {
   function getMyInfo(string ss, bytes20 uid) constant checker(ss, uid) returns(address, uint, uint, string, string, string, string, string) {
     userInfo u = users[uid];
     return (u.paper,u.register,u.wallet,u.username,u.email,u.avatar,u.bio,u.location);
+  }
+  
+  function txNum(string ss, bytes20 uid) constant checker(ss, uid) returns(uint, uint){
+    userInfo u = users[uid];
+    return (u.buy,u.sell);
   }
   
   function compare(string storage _a, string memory _b) internal returns (bool) {
