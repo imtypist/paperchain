@@ -130,12 +130,26 @@ contract user {
     users[seller].sell += 1;
   }
   
-  // function doneTx(string ss, bytes20 uid, uint index, bool result) checker(ss,uid) {
-  //   txInfo tx = txSeller[uid][index];
-  //   if(result){
-        
-  //   }
-  // }
+  function doneTx(string ss, bytes20 uid, uint index, bool result) checker(ss,uid) {
+    txInfo tx = txSeller[uid][index];
+    userInfo seller = users[uid];
+    userInfo buyer = users[tx.buyer];
+    if(result){
+        seller.wallet += tx.price;
+        buyer.wallet -= tx.price;
+    }
+    seller.sell -= 1;
+    buyer.buy -= 1;
+    txSeller[uid].length --;
+    txBuyer[tx.buyer].length --;
+  }
+
+  function deleteAccount(string ss, bytes20 uid) checker(ss,uid) {
+    delete users[uid];
+    delete rbac[uid];
+    delete txSeller[uid];
+    delete txBuyer[uid];
+  }
 
   function getOtherUserInfo(bytes20 uid) constant returns(address, uint, string, string, string, string, string) {
     userInfo u = users[uid];
