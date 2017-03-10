@@ -24,7 +24,6 @@
     neon-animated-pages > .neon-animating {
         pointer-events: none;
     }
-
     </style>
     <!-- Shady DOM styles for neon-animatable -->
     <style scope="neon-animatable">
@@ -865,6 +864,7 @@
         -ms-flex: 1 1 0.000000001px;
         -webkit-flex: 1;
         flex: 1;
+        cursor: pointer;
         -webkit-flex-basis: 0.000000001px;
         flex-basis: 0.000000001px;
         display: -ms-flexbox;
@@ -1097,7 +1097,7 @@
         stroke: none;
         width: 24px;
         height: 24px;
-        ;
+        cursor: pointer;
     }
     </style>
     <!-- Shady DOM styles for paper-progress -->
@@ -12334,12 +12334,16 @@
         padding-bottom: 8vh;
     }
     
-    .ac-intro-0 .whatitem.ac-intro {
+    .ac-intro-0 .whatitem.ac-intro,.ac-home-0 .whatitem.ac-home {
         width: 230px;
         margin-top: 20px;
     }
+
+    .ac-home-0 .whatitem.ac-home {
+        cursor: pointer;
+    }
     
-    .ac-intro-0 .whatitemimg.ac-intro {
+    .ac-intro-0 .whatitemimg.ac-intro,.ac-home-0 .whatitemimg.ac-home {
         width: 90px;
         height: 90px;
         margin: 25px 0px 25px 0px;
@@ -12347,7 +12351,7 @@
         overflow: hidden;
     }
     
-    .ac-intro-0 .whatitemimg.ac-intro img.ac-intro {
+    .ac-intro-0 .whatitemimg.ac-intro img.ac-intro,.ac-home-0 .whatitemimg.ac-home img.ac-home {
         width: 100%;
         height: 100%;
     }
@@ -13294,7 +13298,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Swarm City">
-    
     <style>
     /* IE 10 support for HTML5 hidden attr */
     
@@ -14053,7 +14056,6 @@
         display: none;
     }
     </style>
-    
 </head>
 
 <body class="fullbleed layout vertical">
@@ -14082,16 +14084,18 @@
             <ac-intro id="intro" data-page="intro" class="style-scope ac-app x-scope ac-intro-0 iron-selected">
                 <iron-media-query query="(min-width:0px) and (max-width: 420px)" class="style-scope ac-intro" style="display: none;"></iron-media-query>
                 <app-route pattern="/:page" class="style-scope ac-intro"></app-route>
-                <div  id="blackcolor" class="topbar yellowback style-scope ac-intro">
+                <div id="blackcolor" class="topbar yellowback style-scope ac-intro">
                     <span class="flex style-scope ac-intro"></span>
-                    <iron-icon id="icon" class="grey3 style-scope ac-intro x-scope iron-icon-0" icon="sc-icons:decline" style="display: none;"><svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block; width: 100%; height: 100%;" class="style-scope iron-icon"><samp></samp>vg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
-<path class="st0 style-scope iron-icon" d="M36.2,34.6l-9.3-9.3l9.3-9.3c0.2-0.2,0.4-0.5,0.4-0.9s-0.1-0.6-0.4-0.9c-0.5-0.5-1.3-0.5-1.7,0l-9.3,9.3
+                    <iron-icon id="icon" class="grey3 style-scope ac-intro x-scope iron-icon-0" icon="sc-icons:decline" style="display: none;">
+                        <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block; width: 100%; height: 100%;" class="style-scope iron-icon">
+                            <samp></samp>vg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
+                            <path class="st0 style-scope iron-icon" d="M36.2,34.6l-9.3-9.3l9.3-9.3c0.2-0.2,0.4-0.5,0.4-0.9s-0.1-0.6-0.4-0.9c-0.5-0.5-1.3-0.5-1.7,0l-9.3,9.3
   l-9.3-9.3c-0.2-0.2-0.5-0.4-0.9-0.4c-0.3,0-0.6,0.1-0.9,0.4s-0.4,0.5-0.4,0.9c0,0.3,0.1,0.6,0.4,0.9l9.3,9.3l-9.3,9.3
   c-0.2,0.2-0.4,0.5-0.4,0.9s0.1,0.6,0.4,0.9c0.5,0.5,1.3,0.5,1.7,0l9.3-9.3l9.3,9.3c0.2,0.2,0.5,0.4,0.9,0.4c0.3,0,0.6-0.1,0.9-0.4
   s0.4-0.5,0.4-0.9C36.5,35.1,36.4,34.8,36.2,34.6z"></path>
-</svg></svg>
-    
-  </iron-icon>
+                        </svg>
+                        </svg>
+                    </iron-icon>
                     <template is="dom-if" class="style-scope ac-intro"></template>
                 </div>
                 <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" class="style-scope ac-intro">
@@ -14119,7 +14123,7 @@
                             <paper-button id="yellow" class="grey4 shadow enterbtn bigbtn style-scope ac-intro x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">enter here</paper-button>
                         </div>
                         <div class="totalwidth whiteback vertic centercenter paddingallround style-scope ac-intro">
-                           <p class="centertxt ultralight maintxt grey3 maxwidthz style-scope ac-intro">BlockCp2 is the first truly decentralized peer to peer sharing economy.</p>
+                            <p class="centertxt ultralight maintxt grey3 maxwidthz style-scope ac-intro">BlockCp2 is the first truly decentralized peer to peer sharing economy.</p>
                             <div class="whitespace style-scope ac-intro"></div>
                             <div class="whatitems horizont start centerjust wrap style-scope ac-intro">
                                 <div class="whatitem vertic center startjust style-scope ac-intro">
@@ -14678,9 +14682,9 @@
                             <div class="whitespace style-scope ac-vault"></div>
                             <div class="whitespace style-scope ac-vault"></div>
                             <div class="vertic yesnobtns center style-scope ac-vault">
-                                <paper-button class="yesno bigbtn centertxt redback white shadow style-scope ac-vault x-scope paper-button-0" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Remove the user from this device</paper-button>
+                                <paper-button id="removefromdevice" class="yesno bigbtn centertxt redback white shadow style-scope ac-vault x-scope paper-button-0" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Remove the user from this device</paper-button>
                                 <div class="minispace style-scope ac-vault"></div>
-                                <paper-button class="yesno bigbtn centertxt lighter shadow style-scope ac-vault x-scope paper-button-0" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Cancel</paper-button>
+                                <paper-button id="cancelremovefromdevice" class="yesno bigbtn centertxt lighter shadow style-scope ac-vault x-scope paper-button-0" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Cancel</paper-button>
                             </div>
                         </div>
                     </neon-animatable>
@@ -14848,7 +14852,7 @@
                                     <iron-a11y-keys id="a11y" keys="enter" class="style-scope ac-password">
                                     </iron-a11y-keys>
                                     <div class="totalwidth vertic centercenter style-scope ac-password">
-                                     <paper-input id="pas1" type="text" autofocus="" class="centertxt style-scope ac-password x-scope paper-input-0" tabindex="0" aria-disabled="false">
+                                        <paper-input id="pas1" type="text" autofocus="" class="centertxt style-scope ac-password x-scope paper-input-0" tabindex="0" aria-disabled="false">
                                             <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
                                                 <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
                                                 <template is="dom-if" class="style-scope paper-input-container"></template>
@@ -15126,6 +15130,36 @@
                         </div>
                     </div>
                 </div>
+                <div class="totalwidth whiteback vertic centercenter paddingallround style-scope ac-home">
+                            <p class="centertxt ultralight maintxt grey3 maxwidthz style-scope ac-home">BlockCp2 is the first truly decentralized peer to peer sharing economy.</p>
+                            <div class="whitespace style-scope ac-home"></div>
+                            <div class="whatitems horizont start centerjust wrap style-scope ac-home">
+                                <div class="whatitem vertic center startjust style-scope ac-home">
+                                    <div class="whatitemimg grey1back style-scope ac-home">
+                                        <img src="img/paper.png" class="style-scope ac-home">
+                                    </div>
+                                    <p class="centertxt small reg grey5 style-scope ac-home">Enabled by the SWT token, running
+                                        <br class="style-scope ac-home">on the Ethereum blockchain</p>
+                                    <div class="minispace style-scope ac-home"></div>
+                                </div>
+                                <div class="whatitem vertic center startjust style-scope ac-home">
+                                    <div class="whatitemimg grey1back style-scope ac-home">
+                                        <img src="img/paper.png" class="style-scope ac-home">
+                                    </div>
+                                    <p class="centertxt small reg grey5 style-scope ac-home">Stored locally on your device,
+                                        <br class="style-scope ac-home">no central database</p>
+                                    <div class="minispace style-scope ac-home"></div>
+                                </div>
+                                <div class="whatitem vertic center startjust style-scope ac-home">
+                                    <div class="whatitemimg grey1back style-scope ac-home">
+                                        <img src="img/paper.png" class="style-scope ac-home">
+                                    </div>
+                                    <p class="centertxt small reg grey5 style-scope ac-home">It's an open source project,
+                                        <br class="style-scope ac-home">so you can jump right in</p>
+                                    <div class="minispace style-scope ac-home"></div>
+                                </div>
+                            </div>
+                        </div>
             </ac-home>
             <ac-profile data-page="profile" id="profile" class="style-scope ac-app x-scope ac-profile-0">
                 <ac-ipfs id="ipfs" class="style-scope ac-profile">
@@ -15149,7 +15183,7 @@
                         <neon-animatable data-state="view" class="style-scope ac-profile iron-selected">
                             <div class="totalwidth vertic centercenter view style-scope ac-profile">
                                 <div class="whitespace style-scope ac-profile"></div>
-                                <div class="warning style-scope ac-profile">
+                                <div class="warning style-scope ac-profile" style="display:none;">
                                     <div class="warningsign vertic centercenter style-scope ac-profile">
                                         <p class="bold white style-scope ac-profile">!</p>
                                     </div>
@@ -15201,9 +15235,36 @@
                                             <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
                                                 <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
                                                 <template is="dom-if" class="style-scope paper-input-container"></template>
-                                                <div class="input-content style-scope paper-input-container">
-                                                    <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
+                                                <div class="input-content label-is-floating style-scope paper-input-container">
+                                                    <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">username</label>
+                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" value="Your Name" disabled="disabled" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                    </div>
+                                                </div>
+                                                <div class="underline style-scope paper-input-container">
+                                                    <div class="unfocused-line style-scope paper-input-container"></div>
+                                                    <div class="focused-line style-scope paper-input-container"></div>
+                                                </div>
+                                                <div class="add-on-content style-scope paper-input-container">
+                                                </div>
+                                            </paper-input-container>
+                                        </paper-input>
+                                        <div class="pubkey pubshown style-scope ac-profile">
+                                            <p class="style-scope ac-profile">0x013b8069d0197c6774c9881fc5bc585ef3bdaf61</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="totalwidth toppart style-scope ac-profile" style="padding:6vh 0;">
+                                <div class="profileusername style-scope ac-profile" style="padding-left:10vw;">
+                                    <paper-input label="username" class="usernameinput style-scope ac-profile x-scope paper-input-0" id="usernameinput" tabindex="0" aria-disabled="false">
+                                            <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
+                                                <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
+                                                <template is="dom-if" class="style-scope paper-input-container"></template>
+                                                <div class="input-content label-is-floating style-scope paper-input-container">
+                                                    <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
+                                                        <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">email</label>
                                                         <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
@@ -15217,11 +15278,51 @@
                                                 </div>
                                             </paper-input-container>
                                         </paper-input>
-                                        <iron-collapse id="collapse" class="style-scope ac-profile iron-collapse-closed x-scope iron-collapse-0" role="group" aria-hidden="true" aria-expanded="false" style="transition-property: max-height; transition-duration: 0s; max-height: 0px;">
+                                        <paper-input label="username" class="usernameinput style-scope ac-profile x-scope paper-input-0" id="usernameinput" tabindex="0" aria-disabled="false">
+                                            <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
+                                                <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
+                                                <template is="dom-if" class="style-scope paper-input-container"></template>
+                                                <div class="input-content label-is-floating style-scope paper-input-container">
+                                                    <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
+                                                        <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">bio</label>
+                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                    </div>
+                                                </div>
+                                                <div class="underline style-scope paper-input-container">
+                                                    <div class="unfocused-line style-scope paper-input-container"></div>
+                                                    <div class="focused-line style-scope paper-input-container"></div>
+                                                </div>
+                                                <div class="add-on-content style-scope paper-input-container">
+                                                </div>
+                                            </paper-input-container>
+                                        </paper-input>
+                                        <paper-input label="username" class="usernameinput style-scope ac-profile x-scope paper-input-0" id="usernameinput" tabindex="0" aria-disabled="false">
+                                            <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
+                                                <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
+                                                <template is="dom-if" class="style-scope paper-input-container"></template>
+                                                <div class="input-content label-is-floating style-scope paper-input-container">
+                                                    <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
+                                                        <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">location</label>
+                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                    </div>
+                                                </div>
+                                                <div class="underline style-scope paper-input-container">
+                                                    <div class="unfocused-line style-scope paper-input-container"></div>
+                                                    <div class="focused-line style-scope paper-input-container"></div>
+                                                </div>
+                                                <div class="add-on-content style-scope paper-input-container">
+                                                </div>
+                                            </paper-input-container>
+                                        </paper-input>
+                                        <iron-collapse id="collapse" class="style-scope ac-profile x-scope iron-collapse-0 iron-collapse-opened" role="group" aria-hidden="false" aria-expanded="true" style="transition-property: max-height; transition-duration: 0s;clear:both;">
                                             <div class="whitespace style-scope ac-profile"></div>
                                             <div class="confirmbtns style-scope ac-profile">
                                                 <iron-icon icon="sc-icons:decline" class="blue style-scope ac-profile x-scope iron-icon-0">
-                                                    <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block; width: 100%; height: 100%;" class="style-scope iron-icon">
+                                                    <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
                                                         <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
                                                             <path class="st0 style-scope iron-icon" d="M36.2,34.6l-9.3-9.3l9.3-9.3c0.2-0.2,0.4-0.5,0.4-0.9s-0.1-0.6-0.4-0.9c-0.5-0.5-1.3-0.5-1.7,0l-9.3,9.3
   l-9.3-9.3c-0.2-0.2-0.5-0.4-0.9-0.4c-0.3,0-0.6,0.1-0.9,0.4s-0.4,0.5-0.4,0.9c0,0.3,0.1,0.6,0.4,0.9l9.3,9.3l-9.3,9.3
@@ -15232,7 +15333,7 @@
                                                 </iron-icon>
                                                 <paper-icon-button icon="sc-icons:v" class="blue whiteback style-scope ac-profile x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
                                                     <iron-icon id="icon" class="style-scope paper-icon-button x-scope iron-icon-1">
-                                                        <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block; width: 100%; height: 100%;" class="style-scope iron-icon">
+                                                        <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
                                                             <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
                                                                 <path d="M39.4,17.9c0-1.1-0.9-2.1-2.1-2.1c-0.6,0-1.1,0.2-1.5,0.6l0,0L22.6,29.7l-7.2-7.2l0,0C15,22.2,14.5,22,14,22
   c-1.1,0-2.1,0.9-2.1,2.1c0,0.5,0.2,1,0.5,1.3l0,0l0.1,0.1c0,0,0.1,0.1,0.1,0.1l10,10l0.7-0.7l15.5-15.5l0,0
@@ -15244,10 +15345,98 @@
                                             </div>
                                             <div class="whitespace style-scope ac-profile"></div>
                                         </iron-collapse>
-                                        <div class="pubkey pubhidden style-scope ac-profile">
-                                            <p class="style-scope ac-profile"> </p>
                                         </div>
-                                    </div>
+                                </div>
+                                <div class="totalwidth toppart style-scope ac-profile" style="padding:6vh 0;">
+                                <div class="profileusername style-scope ac-profile" style="padding-left:10vw;">
+                                    <paper-input label="username" class="usernameinput style-scope ac-profile x-scope paper-input-0" id="usernameinput" tabindex="0" aria-disabled="false">
+                                            <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
+                                                <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
+                                                <template is="dom-if" class="style-scope paper-input-container"></template>
+                                                <div class="input-content label-is-floating style-scope paper-input-container">
+                                                    <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
+                                                        <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">old password</label>
+                                                        <input is="iron-input" id="input" type="password" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                    </div>
+                                                </div>
+                                                <div class="underline style-scope paper-input-container">
+                                                    <div class="unfocused-line style-scope paper-input-container"></div>
+                                                    <div class="focused-line style-scope paper-input-container"></div>
+                                                </div>
+                                                <div class="add-on-content style-scope paper-input-container">
+                                                </div>
+                                            </paper-input-container>
+                                        </paper-input>
+                                        <paper-input label="username" class="usernameinput style-scope ac-profile x-scope paper-input-0" id="usernameinput" tabindex="0" aria-disabled="false">
+                                            <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
+                                                <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
+                                                <template is="dom-if" class="style-scope paper-input-container"></template>
+                                                <div class="input-content label-is-floating style-scope paper-input-container">
+                                                    <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
+                                                        <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">new password</label>
+                                                        <input is="iron-input" id="input" type="password" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                    </div>
+                                                </div>
+                                                <div class="underline style-scope paper-input-container">
+                                                    <div class="unfocused-line style-scope paper-input-container"></div>
+                                                    <div class="focused-line style-scope paper-input-container"></div>
+                                                </div>
+                                                <div class="add-on-content style-scope paper-input-container">
+                                                </div>
+                                            </paper-input-container>
+                                        </paper-input>
+                                        <paper-input label="username" class="usernameinput style-scope ac-profile x-scope paper-input-0" id="usernameinput" tabindex="0" aria-disabled="false">
+                                            <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
+                                                <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
+                                                <template is="dom-if" class="style-scope paper-input-container"></template>
+                                                <div class="input-content label-is-floating style-scope paper-input-container">
+                                                    <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
+                                                        <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">repeat new password</label>
+                                                        <input is="iron-input" id="input" type="password" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                        <template is="dom-if" class="style-scope paper-input"></template>
+                                                    </div>
+                                                </div>
+                                                <div class="underline style-scope paper-input-container">
+                                                    <div class="unfocused-line style-scope paper-input-container"></div>
+                                                    <div class="focused-line style-scope paper-input-container"></div>
+                                                </div>
+                                                <div class="add-on-content style-scope paper-input-container">
+                                                </div>
+                                            </paper-input-container>
+                                        </paper-input>
+                                        <iron-collapse id="collapse" class="style-scope ac-profile x-scope iron-collapse-0 iron-collapse-opened" role="group" aria-hidden="false" aria-expanded="true" style="transition-property: max-height; transition-duration: 0s;clear:both;">
+                                            <div class="whitespace style-scope ac-profile"></div>
+                                            <div class="confirmbtns style-scope ac-profile">
+                                                <iron-icon icon="sc-icons:decline" class="blue style-scope ac-profile x-scope iron-icon-0">
+                                                    <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
+                                                        <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
+                                                            <path class="st0 style-scope iron-icon" d="M36.2,34.6l-9.3-9.3l9.3-9.3c0.2-0.2,0.4-0.5,0.4-0.9s-0.1-0.6-0.4-0.9c-0.5-0.5-1.3-0.5-1.7,0l-9.3,9.3
+  l-9.3-9.3c-0.2-0.2-0.5-0.4-0.9-0.4c-0.3,0-0.6,0.1-0.9,0.4s-0.4,0.5-0.4,0.9c0,0.3,0.1,0.6,0.4,0.9l9.3,9.3l-9.3,9.3
+  c-0.2,0.2-0.4,0.5-0.4,0.9s0.1,0.6,0.4,0.9c0.5,0.5,1.3,0.5,1.7,0l9.3-9.3l9.3,9.3c0.2,0.2,0.5,0.4,0.9,0.4c0.3,0,0.6-0.1,0.9-0.4
+  s0.4-0.5,0.4-0.9C36.5,35.1,36.4,34.8,36.2,34.6z"></path>
+                                                        </svg>
+                                                    </svg>
+                                                </iron-icon>
+                                                <paper-icon-button icon="sc-icons:v" class="blue whiteback style-scope ac-profile x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
+                                                    <iron-icon id="icon" class="style-scope paper-icon-button x-scope iron-icon-1">
+                                                        <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
+                                                            <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
+                                                                <path d="M39.4,17.9c0-1.1-0.9-2.1-2.1-2.1c-0.6,0-1.1,0.2-1.5,0.6l0,0L22.6,29.7l-7.2-7.2l0,0C15,22.2,14.5,22,14,22
+  c-1.1,0-2.1,0.9-2.1,2.1c0,0.5,0.2,1,0.5,1.3l0,0l0.1,0.1c0,0,0.1,0.1,0.1,0.1l10,10l0.7-0.7l15.5-15.5l0,0
+  C39.2,19,39.4,18.5,39.4,17.9z" class="style-scope iron-icon"></path>
+                                                            </svg>
+                                                        </svg>
+                                                    </iron-icon>
+                                                </paper-icon-button>
+                                            </div>
+                                            <div class="whitespace style-scope ac-profile"></div>
+                                        </iron-collapse>
+                                        </div>
                                 </div>
                                 <div class="profilecontent style-scope ac-profile" id="profilecontent">
                                     <div class="whitespace style-scope ac-profile"></div>
@@ -15363,13 +15552,9 @@
                                     <iron-media-query query="(min-width:601px) and (max-width: 1400px)" class="style-scope ac-sizeview" style="display: none;"></iron-media-query>
                                     <iron-media-query query="(min-width:1401px)" class="style-scope ac-sizeview" style="display: none;"></iron-media-query>
                                 </ac-sizeview>
-                                <iron-ajax url="https://api.coinmarketcap.com/v1/ticker/arcade-token/" auto="" class="style-scope ac-balance" hidden="">
-                                </iron-ajax>
-                                <iron-ajax url="https://api.fixer.io/latest?base=USD" auto="" class="style-scope ac-balance" hidden="">
-                                </iron-ajax>
                                 <div class="arc-balance vertic start startjust style-scope ac-balance">
                                     <div class="horizont end style-scope ac-balance">
-                                        <h1 class="yellow bold style-scope ac-balance"> </h1>
+                                        <h1 class="yellow bold style-scope ac-balance">0.00</h1>
                                         <h1 class="yellow bold style-scope ac-balance"><span class="SWTletters style-scope ac-balance"> SWT</span>
     </h1>
                                     </div>
@@ -15392,11 +15577,83 @@
                                 </ac-shh>
                             </ac-whisperer>
                             <div class="total vertic centercenter style-scope ac-tokensend">
-                                <div class="totalwidth sendbox style-scope ac-tokensend">
-                                    <paper-button class="sender bigbtn grey1back grey4 style-scope ac-tokensend x-scope paper-button-0" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">send SWT</paper-button>
+                                <div class="totalwidth sendbox style-scope ac-tokensend" style="display: none;">
+                                    <paper-button class="sender bigbtn grey1back grey4 style-scope ac-tokensend x-scope paper-button-0" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">send SWT
+                                        <paper-ripple class="style-scope paper-button">
+                                            <div id="background" class="style-scope paper-ripple" style="opacity: 0;"></div>
+                                            <div id="waves" class="style-scope paper-ripple"></div>
+                                        </paper-ripple>
+                                    </paper-button>
                                 </div>
                                 <template is="dom-if" class="style-scope ac-tokensend"></template>
                                 <div class="sendcoiners style-scope ac-tokensend">
+                                    <paper-input class="sendinputter style-scope ac-tokensend x-scope paper-input-0" autofocus="" type="number" label="Amount" tabindex="0" aria-disabled="false">
+                                        <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
+                                            <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
+                                            <template is="dom-if" class="style-scope paper-input-container"></template>
+                                            <div class="input-content style-scope paper-input-container">
+                                                <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
+                                                    <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-12">Amount</label>
+                                                    <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-12" type="number" autofocus="" tabindex="0">
+                                                    <template is="dom-if" class="style-scope paper-input"></template>
+                                                    <template is="dom-if" class="style-scope paper-input"></template>
+                                                </div>
+                                                <div suffix="" class="style-scope ac-tokensend">SWT</div>
+                                            </div>
+                                            <div class="underline style-scope paper-input-container">
+                                                <div class="unfocused-line style-scope paper-input-container"></div>
+                                                <div class="focused-line style-scope paper-input-container"></div>
+                                            </div>
+                                            <div class="add-on-content style-scope paper-input-container">
+                                            </div>
+                                        </paper-input-container>
+                                    </paper-input>
+                                    <paper-input class="sendinputter style-scope ac-tokensend x-scope paper-input-0" type="text" label="Shortcode receiver or public key" tabindex="0" aria-disabled="false">
+                                        <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
+                                            <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
+                                            <template is="dom-if" class="style-scope paper-input-container"></template>
+                                            <div class="input-content style-scope paper-input-container">
+                                                <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
+                                                    <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-13">Shortcode receiver or public key</label>
+                                                    <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-13" type="text" tabindex="0">
+                                                    <template is="dom-if" class="style-scope paper-input"></template>
+                                                    <template is="dom-if" class="style-scope paper-input"></template>
+                                                </div>
+                                            </div>
+                                            <div class="underline style-scope paper-input-container">
+                                                <div class="unfocused-line style-scope paper-input-container"></div>
+                                                <div class="focused-line style-scope paper-input-container"></div>
+                                            </div>
+                                            <div class="add-on-content style-scope paper-input-container">
+                                            </div>
+                                        </paper-input-container>
+                                    </paper-input>
+                                    <div class="whitespace style-scope ac-tokensend"></div>
+                                    <div class="confirmbtns style-scope ac-tokensend">
+                                        <iron-icon icon="sc-icons:decline" class="grey4 medium style-scope ac-tokensend x-scope iron-icon-0">
+                                            <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
+                                                <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
+                                                    <path class="st0 style-scope iron-icon" d="M36.2,34.6l-9.3-9.3l9.3-9.3c0.2-0.2,0.4-0.5,0.4-0.9s-0.1-0.6-0.4-0.9c-0.5-0.5-1.3-0.5-1.7,0l-9.3,9.3
+  l-9.3-9.3c-0.2-0.2-0.5-0.4-0.9-0.4c-0.3,0-0.6,0.1-0.9,0.4s-0.4,0.5-0.4,0.9c0,0.3,0.1,0.6,0.4,0.9l9.3,9.3l-9.3,9.3
+  c-0.2,0.2-0.4,0.5-0.4,0.9s0.1,0.6,0.4,0.9c0.5,0.5,1.3,0.5,1.7,0l9.3-9.3l9.3,9.3c0.2,0.2,0.5,0.4,0.9,0.4c0.3,0,0.6-0.1,0.9-0.4
+  s0.4-0.5,0.4-0.9C36.5,35.1,36.4,34.8,36.2,34.6z"></path>
+                                                </svg>
+                                            </svg>
+                                        </iron-icon>
+                                        <paper-icon-button icon="sc-icons:arrowright" class="blue whiteback shadow big style-scope ac-tokensend x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
+                                            <iron-icon id="icon" class="style-scope paper-icon-button x-scope iron-icon-1">
+                                                <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
+                                                    <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
+                                                        <path d="M21.5,36.3l11-11l-11-11c-0.2-0.2-0.5-0.4-0.9-0.4c-0.3,0-0.6,0.1-0.9,0.4s-0.4,0.5-0.4,0.9
+  c0,0.3,0.1,0.6,0.4,0.9l9.3,9.3l-9.3,9.3c-0.2,0.2-0.4,0.5-0.4,0.9s0.1,0.6,0.4,0.9C20,36.8,21,36.8,21.5,36.3z" class="style-scope iron-icon"></path>
+                                                    </svg>
+                                                </svg>
+                                            </iron-icon>
+                                        </paper-icon-button>
+                                    </div>
+                                    <div class="whitespace style-scope ac-tokensend"></div>
+                                    <div class="whitespace style-scope ac-tokensend"></div>
+                                    <template is="dom-if" class="style-scope ac-tokensend"></template>
                                     <template is="dom-if" class="style-scope ac-tokensend"></template>
                                     <template is="dom-if" class="style-scope ac-tokensend"></template>
                                     <template is="dom-if" class="style-scope ac-tokensend"></template>
@@ -15410,7 +15667,7 @@
                             </div>
                         </ac-tokensend>
                         <template is="dom-if" class="style-scope ac-walletview"></template>
-                        <ac-tokenreceive class="style-scope ac-walletview x-scope ac-tokenreceive-0">
+                        <ac-tokenreceive class="style-scope ac-walletview x-scope ac-tokenreceive-0" style="display: none;">
                             <iron-media-query query="(min-width:0px) and (max-width: 420px)" class="style-scope ac-tokenreceive" style="display: none;"></iron-media-query>
                             <ac-ipfs id="ipfs" class="style-scope ac-tokenreceive">
                                 <ac-config class="style-scope ac-ipfs"></ac-config>
@@ -15427,9 +15684,34 @@
                                     <div class="vertic centercenter style-scope ac-shortcode">
                                         <paper-button class="sender bigbtn grey1back grey4 style-scope ac-shortcode x-scope paper-button-0" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">
                                             shortcode
+                                            <paper-ripple class="style-scope paper-button">
+                                                <div id="background" class="style-scope paper-ripple" style="opacity: 0;"></div>
+                                                <div id="waves" class="style-scope paper-ripple"></div>
+                                            </paper-ripple>
                                         </paper-button>
                                     </div>
                                     <template is="dom-if" class="style-scope ac-shortcode"></template>
+                                    <div class="totalwidth topictotal style-scope ac-shortcode" style="display: none;">
+                                        <div class="totalwidth topicintern style-scope ac-shortcode">
+                                            <p class="small grey3 centertxt style-scope ac-shortcode">Temporary shortcode</p>
+                                            <div class="minispace style-scope ac-shortcode"></div>
+                                            <p class="bold blue topic style-scope ac-shortcode">0</p>
+                                        </div>
+                                        <template is="dom-if" class="style-scope ac-shortcode"></template>
+                                        <template is="dom-if" class="style-scope ac-shortcode"></template>
+                                        <div class="whitespace style-scope ac-shortcode"></div>
+                                        <iron-icon icon="sc-icons:decline" class="grey4 medium style-scope ac-shortcode x-scope iron-icon-0">
+                                            <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
+                                                <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
+                                                    <path class="st0 style-scope iron-icon" d="M36.2,34.6l-9.3-9.3l9.3-9.3c0.2-0.2,0.4-0.5,0.4-0.9s-0.1-0.6-0.4-0.9c-0.5-0.5-1.3-0.5-1.7,0l-9.3,9.3
+  l-9.3-9.3c-0.2-0.2-0.5-0.4-0.9-0.4c-0.3,0-0.6,0.1-0.9,0.4s-0.4,0.5-0.4,0.9c0,0.3,0.1,0.6,0.4,0.9l9.3,9.3l-9.3,9.3
+  c-0.2,0.2-0.4,0.5-0.4,0.9s0.1,0.6,0.4,0.9c0.5,0.5,1.3,0.5,1.7,0l9.3-9.3l9.3,9.3c0.2,0.2,0.5,0.4,0.9,0.4c0.3,0,0.6-0.1,0.9-0.4
+  s0.4-0.5,0.4-0.9C36.5,35.1,36.4,34.8,36.2,34.6z"></path>
+                                                </svg>
+                                            </svg>
+                                        </iron-icon>
+                                        <div class="whitespace style-scope ac-shortcode"></div>
+                                    </div>
                                     <template is="dom-if" class="style-scope ac-shortcode"></template>
                                 </ac-shortcode>
                                 <template is="dom-if" class="style-scope ac-tokenreceive"></template>
@@ -15448,7 +15730,7 @@
             </ac-walletview>
         </neon-animated-pages>
     </ac-app>
-    <script type="text/javascript" src="js/jquery.min.js" ></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 </body>
 
