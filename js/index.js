@@ -1,4 +1,5 @@
-var address = localStorage.getItem("uid");
+var address;
+refresh();
 $(function(){
 	/* position:首页
 	 * event:跳转
@@ -6,6 +7,7 @@ $(function(){
 	 * branch 1:有address，跳转登录
 	 */
 	$(document).on("click","#yellow",function(){
+		refresh();
 		if(address == null){
 			slidePage("blackcolor",false,"yellowback","createwalletpgs","newuser","block");
 		}else{
@@ -50,6 +52,7 @@ $(function(){
 	 */
 	$(document).on("click","#removefromdevice",function(){
 		localStorage.removeItem("uid");
+		refresh();
 		$("#vault").removeClass("iron-selected");
 		$("#intro").addClass("iron-selected");
 		slidePage("blackcolor",true,"yellowback","vaultPage","welcome","none");
@@ -180,6 +183,10 @@ $(function(){
 		slidePage("blackcolor",true,"yellowback","vaultPage","welcome","none","blueback");
 	});
 });
+
+function refresh() {
+	address = localStorage.getItem("uid");
+}
 
 function slidePage(topbar,addOrRemove,classHere,pageId,showId,icon,backname) {
 	if(topbar){
