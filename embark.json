@@ -1,21 +1,11 @@
 {
   "contracts": ["app/contracts/**"],
   "app": {
-    "css/index.css": ["app/css/immersive-slider.css", "app/css/index.css"],
-    "css/change.css": ["app/css/index.css"],
+    "css/index.css": ["app/css/css_002.css", "app/css/css.css", "app/css/croppie.css"],
     "img/": ["app/img/**"],
-    "js/index.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/jquery.immersive-slider.min.js", "app/js/index.js"],
-    "js/change.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/change.js"],
-    "js/home.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/_vendor/avalon.min.js", "app/js/home.js"],
-    "js/login.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/Login.js"],
-    "js/signUp.js": ["embark.js", "app/js/_vendor/jquery.min.js", "app/js/Sign_Up.js"],
-    "index.html": "app/html/index.html",
-    "change.html": "app/html/change.html",
-    "detail.html": "app/html/detail.html",
-    "home.html": "app/html/home.html",
-    "login.html": "app/html/login.html",
-    "others.html": "app/html/others.html",
-    "signUp.html": "app/html/signUp.html"
+    "fonts/": ["app/fonts/**"],
+    "js/index.js": ["embark.js", "app/js/jquery.min.js", "app/js/index.js"],
+    "index.html": "app/index.html"
   },
   "buildDir": "dist/",
   "config": "config/",

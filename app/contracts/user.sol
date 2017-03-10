@@ -91,6 +91,11 @@ contract user {
     temp.session = sha3(now);
     temp.isLogin = false;
   }
+
+  function recharge(string ss, bytes20 uid, uint money) checker(ss, uid) {
+    userInfo u = users[uid];
+    u.wallet += money;
+  }
   
   function editMyInfo(string ss, bytes20 uid, string email, string avatar, string bio, string location) checker(ss, uid){
     userInfo u = users[uid];
@@ -117,6 +122,7 @@ contract user {
   }
   
   function paperTx(string ss, bytes20 uid, bytes20 seller, uint price, string fileHash) checker(ss, uid) {
+    if(users[uid].wallet < price) throw;
     txInfo memory tx = txInfo({
         buyer:uid,
         seller:seller,
