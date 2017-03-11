@@ -1,5 +1,20 @@
 var address;
+var session;
 refresh();
+var contractOfPaper;
+
+var userInfo = avalon.define({
+	$id:userInfo,
+	paper:[],
+	wallet:"",
+	username:"username",
+	email:"",
+	avatar:"img/unnamed.jpg",
+	bio:"",
+	location:"",
+	address:address
+});
+
 $(function(){
 	/* position:首页
 	 * event:跳转
@@ -38,7 +53,7 @@ $(function(){
 	/* position:恢复address页面
 	 * event:跳转登录页
 	 */
-	$(document).on("click","#restoreJumpToLogin,#createnew iron-icon:eq(1)",function(){
+	$(document).on("click","#restoreJumpToLogin",function(){
 		slidePage("blackcolor",false,"blueback","vaultPage","unlock","block");
 	});
 	/* position:登陆页面
@@ -67,8 +82,61 @@ $(function(){
 	 * event:进入home页面
 	 */
 	$(document).on("click","#unlock iron-icon:eq(1)",function(){
-		$("#vault").removeClass("iron-selected");
-		$("#home").addClass("iron-selected");
+		var email = $("#login_email").val();
+		if(!checkEmail(email)){
+			alert("enter your email");
+			return false;
+		}
+		var password = $("#login_passwd").val();
+		if(!checkPasswd(password)){
+			alert("enter your password");
+			return false;
+		}
+		var now = new Date();
+		localStorage.setItem("session",now.getTime());
+		refresh();
+		var button = $(this).parent();
+		button.attr("disabled","disabled");
+		user.login(address,email,password,session,{gas:500000}).then(function(res){
+			waitForTx(res.transactionHash,function(){
+				user.query(session,address).then(function(res){
+					if(res == true){
+						alert("login success");
+						$("#vault").removeClass("iron-selected");
+						$("#home").addClass("iron-selected");
+						user.users(address).then(function(info){
+							var paper = info[0];
+							if(paper == "0x0000000000000000000000000000000000000000"){
+								PaperCopyright.deploy([address],{gas:4700000}).then(function(res){
+									contractOfPaper = res;
+									user.setPaperAddr(session,address,contractOfPaper.address,{gas:500000}).then(function(res){
+										waitForTx(res.transactionHash,function(){
+
+										});
+									});
+								});
+							}else{
+								contractOfPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: paper});
+								contractOfPaper.len().then(function(res){
+
+								});
+							}
+							userInfo.wallet = info[2].toNumber();
+							userInfo.username = info[3];
+							userInfo.email = info[4];
+							var avatar = info[5];
+							if(avatar != "")
+								userInfo.avatar = avatar;
+							userInfo.bio = info[6];
+							userInfo.location = info[7];
+						});
+					}else{
+						alert("login false");
+					}
+					button.removeAttr("disabled");
+				});
+			});
+		});
 	});
 	/* position:home页面
 	 * event:跳转个人信息页
@@ -107,6 +175,46 @@ $(function(){
 		$("#vault").removeClass("iron-selected");
 		$("#intro").addClass("iron-selected");
 		slidePage("blackcolor",true,"yellowback","vaultPage","welcome","none","blueback");
+	});
+	/* position:注册页面
+	 * event:跳转登录页
+	 */
+	$(document).on("click","#createnew iron-icon:eq(1)",function(){
+		var email = $("#register_email").val();
+		if(!checkEmail(email)){
+			alert("enter your email!");
+			return false;
+		}
+		var name = $("#register_name").val();
+		if(!checkName(name)){
+			alert("enter your name!");
+			return false;
+		}
+		var firstPasswd = $("#register_passwd").val();
+		var secondPasswd = $("#register_repeat_passwd").val();
+		if(!checkPasswd(firstPasswd,secondPasswd)){
+			alert("password must be the same!");
+			return false;
+		}
+		generateUid();
+		$("#createnew ac-password:eq(0)").css("display","none");
+		$("#createnew .loaderinit:eq(0)").html($("#loader_container").html());
+		user.register(address,firstPasswd,name,email,{gas:500000}).then(function(res){
+			waitForTx(res.transactionHash,function(){
+				user.users(address).then(function(res){
+					if(res[3] == ""){
+						alert("register false");
+						localStorage.removeItem("uid");
+						refresh();
+					}else{
+						alert("register success");
+						slidePage("blackcolor",false,"blueback","vaultPage","unlock","block");
+					}
+					$("#createnew .loaderinit:eq(0)").html("");
+					$("#createnew ac-password:eq(0)").css("display","block");
+				});
+			});
+		});
 	});
 	/* position:home页面
 	 * event:跳转到充值页面
@@ -186,6 +294,7 @@ $(function(){
 
 function refresh() {
 	address = localStorage.getItem("uid");
+	session = localStorage.getItem("session");
 }
 
 function slidePage(topbar,addOrRemove,classHere,pageId,showId,icon,backname) {
@@ -208,4 +317,55 @@ function slidePage(topbar,addOrRemove,classHere,pageId,showId,icon,backname) {
 	$("#"+showId).animate({left:"0",right:"0"},300,"linear",function(){
 		$(this).css({"left":0,"right":0}).removeClass("neon-animating");
 	});
+}
+
+function checkEmail(email){
+	var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+	if(email == "" || !reg.test(email))
+		return false;
+	else
+		return true;
+}
+
+function checkName(name){
+	if (name == "")
+		return false;
+	else
+		return true;
+}
+
+function checkPasswd(first,second){
+	if(arguments.length == 1){
+		if(first == "" || first.length < 5)
+			return false;
+		else
+			return true;
+	}else if(arguments.length == 2){
+		if(first == "" || first.length < 5 || first != second)
+			return false;
+		else
+			return true;
+	}
+}
+
+function generateUid(){
+	var chars = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
+	var res = "";
+	for(var i = 0; i < 40 ; i ++) {
+	    var id = Math.ceil(Math.random()*15);
+	    res += chars[id];
+	}
+	localStorage.setItem("uid",'0x' + res);
+	refresh();
+}
+
+function waitForTx(res,func){
+	var tx = setInterval(function(){
+		var currentBlock = web3.eth.blockNumber;
+        var txBlock = web3.eth.getTransaction(res).blockNumber;
+        if(txBlock != null && currentBlock > txBlock){
+            clearInterval(tx);
+            func();
+		}
+	},1000);
 }

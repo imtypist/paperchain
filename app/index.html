@@ -4245,7 +4245,8 @@
         width: 4px;
         height: 4px;
         border-radius: 50%;
-        background-color: #EFD96F;
+        /*background-color: #EFD96F;*/
+        background-color: black;
     }
     
     .sc-loader-0 #smallpoints.sc-loader {
@@ -14058,17 +14059,17 @@
 
 <body class="fullbleed layout vertical">
     <ac-app>
-        <neon-animated-pages attr-for-selected="data-page" class="style-scope ac-app">
+        <neon-animated-pages ms-controller="userInfo" attr-for-selected="data-page" class="style-scope ac-app">
             <sc-loadview data-page="loading" msg="" class="style-scope ac-app x-scope sc-loadview-0">
-                <div class="total grey3back grey2 vertic centercenter paddingallround style-scope sc-loadview">
+                <div id="loader_container" class="total grey3back grey2 vertic centercenter paddingallround style-scope sc-loadview">
                     <sc-loader small="" class="yellow style-scope sc-loadview x-scope sc-loader-0" color="yellow">
                         <template is="dom-if" class="style-scope sc-loader"></template>
                         <p class="bold style-scope sc-loader">Loading
                         </p>
                         <div id="smallpoints" class="style-scope sc-loader">
-                            <div class="smallpoint style-scope sc-loader" id="point1"></div>
-                            <div class="smallpoint style-scope sc-loader" id="point2"></div>
-                            <div class="smallpoint style-scope sc-loader" id="point3"></div>
+                            <div class="bigpoint style-scope sc-loader" id="point1"></div>
+                            <div class="bigpoint style-scope sc-loader" id="point2"></div>
+                            <div class="bigpoint style-scope sc-loader" id="point3"></div>
                         </div>
                         <p class="style-scope sc-loader"></p>
                         <template is="dom-if" class="style-scope sc-loader"></template>
@@ -14709,7 +14710,7 @@
                                     <div class="whitespace style-scope ac-vault"></div>
                                     <p class="style-scope ac-vault">We just need some information to create your profile.</p>
                                 </div>
-                                <div class="flex style-scope ac-vault"></div>
+                                <div class="loaderinit flex style-scope ac-vault"></div>
                                 <ac-password double="" sessionname="vaultpassword" class="style-scope ac-vault x-scope ac-password-0">
                                     <iron-a11y-keys id="a11y" keys="enter" class="style-scope ac-password">
                                     </iron-a11y-keys>
@@ -14721,7 +14722,7 @@
                                                 <div class="input-content style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-7" style="display: none;">email</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="email" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-7" tabindex="0" autofocus="" type="text">
+                                                        <input is="iron-input" id="register_email" class="style-scope paper-input" autocomplete="off" placeholder="email" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-7" tabindex="0" autofocus="" type="text">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -14741,7 +14742,7 @@
                                                 <div class="input-content style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-7" style="display: none;">Your real name</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="Your real name" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-7" tabindex="0" autofocus="" type="text">
+                                                        <input is="iron-input" id="register_name" class="style-scope paper-input" autocomplete="off" placeholder="Your real name" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-7" tabindex="0" autofocus="" type="text">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -14761,7 +14762,7 @@
                                                 <div class="input-content style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-7" style="display: none;">password (min. 5 characters)</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="password (min. 5 characters)" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-7" tabindex="0" autofocus="" type="password">
+                                                        <input is="iron-input" id="register_passwd" class="style-scope paper-input" autocomplete="off" placeholder="password (min. 5 characters)" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-7" tabindex="0" autofocus="" type="password">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -14781,7 +14782,7 @@
                                                 <div class="input-content style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-10" style="display: none;">password repeat</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="password repeat" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-10" tabindex="0" type="password">
+                                                        <input is="iron-input" id="register_repeat_passwd" class="style-scope paper-input" autocomplete="off" placeholder="password repeat" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-10" tabindex="0" type="password">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -14856,8 +14857,8 @@
                                                 <template is="dom-if" class="style-scope paper-input-container"></template>
                                                 <div class="input-content style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
-                                                        <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-8">Email</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-8" tabindex="0" autofocus="" type="text">
+                                                        <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-8" style="display: none;">Email</label>
+                                                        <input is="iron-input" id="login_email" class="style-scope paper-input" autocomplete="off" placeholder="Email" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-8" tabindex="0" autofocus="" type="text">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -14876,8 +14877,8 @@
                                                 <template is="dom-if" class="style-scope paper-input-container"></template>
                                                 <div class="input-content style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
-                                                        <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-8">Enter your password</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-8" tabindex="0" autofocus="" type="password">
+                                                        <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-8" style="display: none;">Enter your password</label>
+                                                        <input is="iron-input" id="login_passwd" class="style-scope paper-input" autocomplete="off" placeholder="Enter your password" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-8" tabindex="0" autofocus="" type="password">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15071,7 +15072,7 @@
                                     </ac-ipfs>
                                     <div class="arc-avatar style-scope ac-avatar">
                                         <div class="avatar normal style-scope ac-avatar">
-                                            <img class="style-scope ac-avatar" id="homeJumpToProfile" src="img/unnamed.jpg">
+                                            <img class="style-scope ac-avatar" id="homeJumpToProfile" src="{{avatar}}">
                                         </div>
                                     </div>
                                     <template is="dom-if" class="style-scope ac-avatar"></template>
@@ -15086,7 +15087,7 @@
                                         </ac-ipfs>
                                         <template is="dom-if" class="style-scope ac-avatar"></template>
                                         <div class="username center grey4 style-scope ac-avatar">
-                                            <p class="bold style-scope ac-avatar">username</p>
+                                            <p class="bold style-scope ac-avatar">{{username}}</p>
                                             <template is="dom-if" class="style-scope ac-avatar"></template>
                                             <template is="dom-if" class="style-scope ac-avatar"></template>
                                         </div>
@@ -15109,13 +15110,9 @@
                                             <iron-media-query query="(min-width:601px) and (max-width: 1400px)" class="style-scope ac-sizeview" style="display: none;"></iron-media-query>
                                             <iron-media-query query="(min-width:1401px)" class="style-scope ac-sizeview" style="display: none;"></iron-media-query>
                                         </ac-sizeview>
-                                        <iron-ajax url="https://api.coinmarketcap.com/v1/ticker/arcade-token/" auto="" class="style-scope ac-balance" hidden="">
-                                        </iron-ajax>
-                                        <iron-ajax url="https://api.fixer.io/latest?base=USD" auto="" class="style-scope ac-balance" hidden="">
-                                        </iron-ajax>
                                         <div class="arc-balance vertic start startjust style-scope ac-balance">
                                             <div class="horizont end style-scope ac-balance">
-                                                <h1 class="yellow bold style-scope ac-balance">0.00</h1>
+                                                <h1 class="yellow bold style-scope ac-balance">{{wallet}}</h1>
                                                 <h1 class="yellow bold style-scope ac-balance"><span class="SWTletters style-scope ac-balance"> SWT</span>
     </h1>
                                             </div>
@@ -15131,29 +15128,13 @@
                 <div class="totalwidth whiteback vertic centercenter paddingallround style-scope ac-home">
                             <p class="centertxt ultralight maintxt grey3 maxwidthz style-scope ac-home">BlockCp2 is the first truly decentralized peer to peer sharing economy.</p>
                             <div class="whitespace style-scope ac-home"></div>
-                            <div class="whatitems horizont start centerjust wrap style-scope ac-home">
+                            <div ms-repeat="paper" class="whatitems horizont start centerjust wrap style-scope ac-home">
                                 <div class="whatitem vertic center startjust style-scope ac-home">
                                     <div class="whatitemimg grey1back style-scope ac-home">
                                         <img src="img/paper.png" class="style-scope ac-home">
                                     </div>
                                     <p class="centertxt small reg grey5 style-scope ac-home">Enabled by the SWT token, running
                                         <br class="style-scope ac-home">on the Ethereum blockchain</p>
-                                    <div class="minispace style-scope ac-home"></div>
-                                </div>
-                                <div class="whatitem vertic center startjust style-scope ac-home">
-                                    <div class="whatitemimg grey1back style-scope ac-home">
-                                        <img src="img/paper.png" class="style-scope ac-home">
-                                    </div>
-                                    <p class="centertxt small reg grey5 style-scope ac-home">Stored locally on your device,
-                                        <br class="style-scope ac-home">no central database</p>
-                                    <div class="minispace style-scope ac-home"></div>
-                                </div>
-                                <div class="whatitem vertic center startjust style-scope ac-home">
-                                    <div class="whatitemimg grey1back style-scope ac-home">
-                                        <img src="img/paper.png" class="style-scope ac-home">
-                                    </div>
-                                    <p class="centertxt small reg grey5 style-scope ac-home">It's an open source project,
-                                        <br class="style-scope ac-home">so you can jump right in</p>
                                     <div class="minispace style-scope ac-home"></div>
                                 </div>
                             </div>
@@ -15206,7 +15187,7 @@
                                                 <template is="dom-if" class="style-scope ac-avatar"></template>
                                                 <template is="dom-if" class="style-scope ac-avatar"></template>
                                                 <div class="avatar big style-scope ac-avatar">
-                                                    <img class="style-scope ac-avatar" src="img/unnamed.jpg">
+                                                    <img class="style-scope ac-avatar" src="{{avatar}}">
                                                 </div>
                                                 <template is="dom-if" class="style-scope ac-avatar"></template>
                                             </ac-avatar>
@@ -15236,7 +15217,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">username</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" value="Your Name" disabled="disabled" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" ms-attr-value="username" disabled="disabled" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15250,7 +15231,7 @@
                                             </paper-input-container>
                                         </paper-input>
                                         <div class="pubkey pubshown style-scope ac-profile">
-                                            <p class="style-scope ac-profile">0x013b8069d0197c6774c9881fc5bc585ef3bdaf61</p>
+                                            <p class="style-scope ac-profile">{{address}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -15263,7 +15244,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">email</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" ms-attr-value="email" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15283,7 +15264,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">bio</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" ms-attr-value="bio" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15303,7 +15284,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">location</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" ms-attr-value="location" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15728,7 +15709,11 @@
             </ac-walletview>
         </neon-animated-pages>
     </ac-app>
+    <script type="text/javascript" src="js/embark.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/avalon.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/cert.js"></script>
 </body>
 
 </html>

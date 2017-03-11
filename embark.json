@@ -4,7 +4,11 @@
     "css/index.css": ["app/css/css_002.css", "app/css/css.css", "app/css/croppie.css"],
     "img/": ["app/img/**"],
     "fonts/": ["app/fonts/**"],
-    "js/index.js": ["embark.js", "app/js/jquery.min.js", "app/js/index.js"],
+    "js/embark.js": "embark.js",
+    "js/jquery.min.js": ["app/js/jquery.min.js"],
+    "js/cert.js": ["app/js/cert.js"],
+    "js/index.js": ["app/js/index.js"],
+    "js/avalon.min.js": ["app/js/avalon.min.js"],
     "index.html": "app/index.html"
   },
   "buildDir": "dist/",

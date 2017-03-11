@@ -60,7 +60,7 @@ contract user {
       wallet: 0,
       username: username,
       email: email,
-      avatar: "ipfs url",
+      avatar: "",
       bio: "",
       location: "",
       buy:0,
