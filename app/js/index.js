@@ -2,17 +2,20 @@ var address;
 var session;
 refresh();
 var contractOfPaper;
+EmbarkJS.Storage.setProvider('ipfs',{server: 'localhost', port: '5001'});
 
 var userInfo = avalon.define({
-	$id:userInfo,
+	$id:"userInfo",
 	paper:[],
 	wallet:"",
 	username:"username",
 	email:"",
+	hash:"",
 	avatar:"img/unnamed.jpg",
 	bio:"",
 	location:"",
-	address:address
+	address:address,
+	len:0
 });
 
 $(function(){
@@ -47,7 +50,6 @@ $(function(){
 	 * event:不同意返回首页
 	 */
 	$(document).on("click","#convertToken",function(){
-		//slidePage("blackcolor",false,"blueback","createwalletpgs","importwallet","block");
 		slidePage("blackcolor",true,"yellowback","createwalletpgs","welcome","none","blueback");
 	});
 	/* position:恢复address页面
@@ -111,22 +113,37 @@ $(function(){
 									contractOfPaper = res;
 									user.setPaperAddr(session,address,contractOfPaper.address,{gas:500000}).then(function(res){
 										waitForTx(res.transactionHash,function(){
-
+											// do nothing
 										});
 									});
 								});
 							}else{
 								contractOfPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: paper});
 								contractOfPaper.len().then(function(res){
-
+									var paperLength = res.toNumber();
+									if(paperLength > 0){
+										userInfo.len = paperLength;
+										avalon.scan();
+										for(var i = 0;i < paperLength;i++){
+											contractOfPaper.getAllPaperInfo(address,i).then(function(res){
+												userInfo.paper.push({
+													"hash":res[1],
+													"title":res[2],
+													"date":res[3]
+												});
+											});
+										}
+									}
 								});
 							}
 							userInfo.wallet = info[2].toNumber();
 							userInfo.username = info[3];
 							userInfo.email = info[4];
 							var avatar = info[5];
-							if(avatar != "")
-								userInfo.avatar = avatar;
+							if(avatar != ""){
+								userInfo.hash = avatar;
+								userInfo.avatar = EmbarkJS.Storage.getUrl(avatar);
+							}
 							userInfo.bio = info[6];
 							userInfo.location = info[7];
 						});
@@ -159,6 +176,33 @@ $(function(){
 	$(document).on("click","#profile .topbar iron-icon:eq(0)",function(){
 		$("#profile").removeClass("iron-selected");
 		$("#home").addClass("iron-selected");
+	});
+	/* position:个人信息页
+	 * event:点击上传头像
+	 */
+	$(document).on("click","#uploadbtn",function(){
+		$("#avatarupload").click();
+	});
+	/* position:个人信息页
+	 * event:选择图片并上传
+	 */
+	$(document).on("change","#avatarupload",function(){
+		var url = $("#avatarupload");
+		if(url.val() != ""){
+          	EmbarkJS.Storage.uploadFile(url).then(function(hash) {
+              var ipfsUrl = EmbarkJS.Storage.getUrl(hash);
+              userInfo.avatar = ipfsUrl;
+              userInfo.hash = hash;
+              avalon.scan();
+              editMyInfo();
+            });
+		}
+	});
+	/* position:个人信息页
+	 * event:修改个人信息
+	 */
+	$(document).on("click","#editInfo",function(){
+		editMyInfo();
 	});
 	/* position:注册前须知页面
 	 * event:跳转注册页面
@@ -230,6 +274,22 @@ $(function(){
 		$("#walletview").removeClass("iron-selected");
 		$("#home").addClass("iron-selected");
 	});
+	/* position:home页面
+	 * event:跳转到声明版权页面
+	 */
+	$(document).on("click","#declarecopyright",function(){
+		$("#home").removeClass("iron-selected");
+		$("#vault").addClass("iron-selected");
+		slidePage("blackcolor",false,"yellowback","vaultPage","importpk","block");
+	});
+	/* position:声明版权页面
+	 * event:返回home
+	 */
+	$(document).on("click","#importpk iron-icon:eq(0)",function(){
+		$("#vault").removeClass("iron-selected");
+		$("#importpk").removeClass("iron-selected");
+		$("#home").addClass("iron-selected");
+	});
 	/* position:unknow
 	 */
 	$(document).on("click","#asJsonFile",function(){
@@ -266,14 +326,6 @@ $(function(){
 		$("#vault").addClass("iron-selected");
 		$("#intro").removeClass("iron-selected");
 		slidePage(false,false,false,"createwalletpgs","importpk");
-	});
-	/* position:unknow
-	 * event:返回首页
-	 */
-	$(document).on("click","#importpk iron-icon:eq(0)",function(){
-		$("#vault").removeClass("iron-selected");
-		$("#intro").addClass("iron-selected");
-		slidePage("blackcolor",true,"yellowback","vaultPage","welcome","none","blueback");
 	});
 	/* position:unknow
 	 */
@@ -368,4 +420,12 @@ function waitForTx(res,func){
             func();
 		}
 	},1000);
+}
+
+function editMyInfo(){
+	user.editMyInfo(session,address,$("#profile_email").val(),userInfo.hash,$("#profile_bio").val(),$("#profile_location").val(),{gas:500000}).then(function(res){
+	    waitForTx(res.transactionHash,function(){
+	    	// do nothing
+	    });
+	});
 }

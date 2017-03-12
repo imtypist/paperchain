@@ -60,7 +60,7 @@ contract PaperCopyright {
     }
   }
 
-  function getPaperInfo(bytes20 sender,uint index) constant returns(string,string,string,uint,bool){
+  function getAllPaperInfo(bytes20 sender,uint index) constant returns(string,string,string,uint,bool){
     if(sender != creator) throw;
     Paper p = papers[index];
     return (p.author,p.fileHash,p.title,p.date,p.isPublic);

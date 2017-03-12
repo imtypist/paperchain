@@ -14059,7 +14059,7 @@
 
 <body class="fullbleed layout vertical">
     <ac-app>
-        <neon-animated-pages attr-for-selected="data-page" class="style-scope ac-app">
+        <neon-animated-pages ms-controller="userInfo" attr-for-selected="data-page" class="style-scope ac-app">
             <sc-loadview data-page="loading" msg="" class="style-scope ac-app x-scope sc-loadview-0">
                 <div id="loader_container" class="total grey3back grey2 vertic centercenter paddingallround style-scope sc-loadview">
                     <sc-loader small="" class="yellow style-scope sc-loadview x-scope sc-loader-0" color="yellow">
@@ -14268,9 +14268,9 @@
                                 <div class="whitespace style-scope ac-vault"></div>
                                 <template is="dom-if" class="style-scope ac-vault"></template>
                                 <div class="maxwidth style-scope ac-vault">
-                                    <h1 class="bold blue style-scope ac-vault">ARC-wallet<br class="style-scope ac-vault">as a print / pdf</h1>
+                                    <h1 class="bold blue style-scope ac-vault">Upload paper<br class="style-scope ac-vault">as a print / pdf</h1>
                                     <div class="whitespace style-scope ac-vault"></div>
-                                    <p class="reg grey4 style-scope ac-vault">Enter the private key you'll find on your ARC-wallet.</p>
+                                    <p class="reg grey4 style-scope ac-vault">Enter the title you'll find on your paper list.</p>
                                 </div>
                                 <div class="flex style-scope ac-vault"></div>
                                 <div class="totalwidth horizont end startjust maxwidth style-scope ac-vault">
@@ -14280,8 +14280,8 @@
                                             <template is="dom-if" class="style-scope paper-input-container"></template>
                                             <div class="input-content style-scope paper-input-container">
                                                 <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
-                                                    <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-1">Private key</label>
-                                                    <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-1" tabindex="0" type="password">
+                                                    <label style="display: none;" aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-1">paper title</label>
+                                                    <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="paper title" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-1" tabindex="0" type="password">
                                                     <template is="dom-if" class="style-scope paper-input"></template>
                                                     <template is="dom-if" class="style-scope paper-input"></template>
                                                 </div>
@@ -15072,7 +15072,7 @@
                                     </ac-ipfs>
                                     <div class="arc-avatar style-scope ac-avatar">
                                         <div class="avatar normal style-scope ac-avatar">
-                                            <img class="style-scope ac-avatar" id="homeJumpToProfile" src="img/unnamed.jpg">
+                                            <img class="style-scope ac-avatar" id="homeJumpToProfile" ms-attr-src="avatar">
                                         </div>
                                     </div>
                                     <template is="dom-if" class="style-scope ac-avatar"></template>
@@ -15087,7 +15087,7 @@
                                         </ac-ipfs>
                                         <template is="dom-if" class="style-scope ac-avatar"></template>
                                         <div class="username center grey4 style-scope ac-avatar">
-                                            <p class="bold style-scope ac-avatar">username</p>
+                                            <p class="bold style-scope ac-avatar">{{username}}</p>
                                             <template is="dom-if" class="style-scope ac-avatar"></template>
                                             <template is="dom-if" class="style-scope ac-avatar"></template>
                                         </div>
@@ -15110,13 +15110,9 @@
                                             <iron-media-query query="(min-width:601px) and (max-width: 1400px)" class="style-scope ac-sizeview" style="display: none;"></iron-media-query>
                                             <iron-media-query query="(min-width:1401px)" class="style-scope ac-sizeview" style="display: none;"></iron-media-query>
                                         </ac-sizeview>
-                                        <iron-ajax url="https://api.coinmarketcap.com/v1/ticker/arcade-token/" auto="" class="style-scope ac-balance" hidden="">
-                                        </iron-ajax>
-                                        <iron-ajax url="https://api.fixer.io/latest?base=USD" auto="" class="style-scope ac-balance" hidden="">
-                                        </iron-ajax>
                                         <div class="arc-balance vertic start startjust style-scope ac-balance">
                                             <div class="horizont end style-scope ac-balance">
-                                                <h1 class="yellow bold style-scope ac-balance">0.00</h1>
+                                                <h1 class="yellow bold style-scope ac-balance">{{wallet}}</h1>
                                                 <h1 class="yellow bold style-scope ac-balance"><span class="SWTletters style-scope ac-balance"> SWT</span>
     </h1>
                                             </div>
@@ -15130,31 +15126,18 @@
                     </div>
                 </div>
                 <div class="totalwidth whiteback vertic centercenter paddingallround style-scope ac-home">
-                            <p class="centertxt ultralight maintxt grey3 maxwidthz style-scope ac-home">BlockCp2 is the first truly decentralized peer to peer sharing economy.</p>
+                <div class="homecontent style-scope" id="homecontent">
+                                    <paper-button style="color: white;" id="declarecopyright" class="greenback bold downbtns style-scope ac-home x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Declare PaperCopyright</paper-button>
+                                </div>
+                            <p class="centertxt ultralight maintxt grey3 maxwidthz style-scope ac-home">You now own <strong>{{len}}</strong> papers.</p>
                             <div class="whitespace style-scope ac-home"></div>
-                            <div class="whatitems horizont start centerjust wrap style-scope ac-home">
+                            <div ms-repeat="paper" class="whatitems horizont start centerjust wrap style-scope ac-home">
                                 <div class="whatitem vertic center startjust style-scope ac-home">
                                     <div class="whatitemimg grey1back style-scope ac-home">
                                         <img src="img/paper.png" class="style-scope ac-home">
                                     </div>
-                                    <p class="centertxt small reg grey5 style-scope ac-home">Enabled by the SWT token, running
-                                        <br class="style-scope ac-home">on the Ethereum blockchain</p>
-                                    <div class="minispace style-scope ac-home"></div>
-                                </div>
-                                <div class="whatitem vertic center startjust style-scope ac-home">
-                                    <div class="whatitemimg grey1back style-scope ac-home">
-                                        <img src="img/paper.png" class="style-scope ac-home">
-                                    </div>
-                                    <p class="centertxt small reg grey5 style-scope ac-home">Stored locally on your device,
-                                        <br class="style-scope ac-home">no central database</p>
-                                    <div class="minispace style-scope ac-home"></div>
-                                </div>
-                                <div class="whatitem vertic center startjust style-scope ac-home">
-                                    <div class="whatitemimg grey1back style-scope ac-home">
-                                        <img src="img/paper.png" class="style-scope ac-home">
-                                    </div>
-                                    <p class="centertxt small reg grey5 style-scope ac-home">It's an open source project,
-                                        <br class="style-scope ac-home">so you can jump right in</p>
+                                    <p class="centertxt small reg grey5 style-scope ac-home">{{el.title}}
+                                        <br class="style-scope ac-home">{{el.date}}</p>
                                     <div class="minispace style-scope ac-home"></div>
                                 </div>
                             </div>
@@ -15207,7 +15190,7 @@
                                                 <template is="dom-if" class="style-scope ac-avatar"></template>
                                                 <template is="dom-if" class="style-scope ac-avatar"></template>
                                                 <div class="avatar big style-scope ac-avatar">
-                                                    <img class="style-scope ac-avatar" src="img/unnamed.jpg">
+                                                    <img class="style-scope ac-avatar" ms-attr-src="avatar">
                                                 </div>
                                                 <template is="dom-if" class="style-scope ac-avatar"></template>
                                             </ac-avatar>
@@ -15237,7 +15220,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">username</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" value="Your Name" disabled="disabled" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" ms-attr-value="username" disabled="disabled" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15251,7 +15234,7 @@
                                             </paper-input-container>
                                         </paper-input>
                                         <div class="pubkey pubshown style-scope ac-profile">
-                                            <p class="style-scope ac-profile">0x013b8069d0197c6774c9881fc5bc585ef3bdaf61</p>
+                                            <p class="style-scope ac-profile">{{address}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -15264,7 +15247,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">email</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="profile_email" class="style-scope paper-input" autocomplete="off" placeholder="" ms-attr-value="email" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15284,7 +15267,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">bio</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="profile_bio" class="style-scope paper-input" autocomplete="off" placeholder="" ms-attr-value="bio" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15304,7 +15287,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">location</label>
-                                                        <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="profile_location" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" ms-attr-value="location" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15320,7 +15303,7 @@
                                         <iron-collapse id="collapse" class="style-scope ac-profile x-scope iron-collapse-0 iron-collapse-opened" role="group" aria-hidden="false" aria-expanded="true" style="transition-property: max-height; transition-duration: 0s;clear:both;">
                                             <div class="whitespace style-scope ac-profile"></div>
                                             <div class="confirmbtns style-scope ac-profile">
-                                                <iron-icon icon="sc-icons:decline" class="blue style-scope ac-profile x-scope iron-icon-0">
+                                                <iron-icon style="display: none;" icon="sc-icons:decline" class="blue style-scope ac-profile x-scope iron-icon-0">
                                                     <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
                                                         <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
                                                             <path class="st0 style-scope iron-icon" d="M36.2,34.6l-9.3-9.3l9.3-9.3c0.2-0.2,0.4-0.5,0.4-0.9s-0.1-0.6-0.4-0.9c-0.5-0.5-1.3-0.5-1.7,0l-9.3,9.3
@@ -15330,7 +15313,7 @@
                                                         </svg>
                                                     </svg>
                                                 </iron-icon>
-                                                <paper-icon-button icon="sc-icons:v" class="blue whiteback style-scope ac-profile x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
+                                                <paper-icon-button id="editInfo" icon="sc-icons:v" class="blue whiteback style-scope ac-profile x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
                                                     <iron-icon id="icon" class="style-scope paper-icon-button x-scope iron-icon-1">
                                                         <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
                                                             <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
@@ -15355,7 +15338,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">old password</label>
-                                                        <input is="iron-input" id="input" type="password" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="profile_old_passwd" type="password" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15375,7 +15358,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">new password</label>
-                                                        <input is="iron-input" id="input" type="password" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="profile_new_passwd" type="password" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15395,7 +15378,7 @@
                                                 <div class="input-content label-is-floating style-scope paper-input-container">
                                                     <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: static;">
                                                         <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-11">repeat new password</label>
-                                                        <input is="iron-input" id="input" type="password" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
+                                                        <input is="iron-input" id="profile_repeat_passwd" type="password" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-11" tabindex="0">
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                         <template is="dom-if" class="style-scope paper-input"></template>
                                                     </div>
@@ -15411,7 +15394,7 @@
                                         <iron-collapse id="collapse" class="style-scope ac-profile x-scope iron-collapse-0 iron-collapse-opened" role="group" aria-hidden="false" aria-expanded="true" style="transition-property: max-height; transition-duration: 0s;clear:both;">
                                             <div class="whitespace style-scope ac-profile"></div>
                                             <div class="confirmbtns style-scope ac-profile">
-                                                <iron-icon icon="sc-icons:decline" class="blue style-scope ac-profile x-scope iron-icon-0">
+                                                <iron-icon style="display: none;" icon="sc-icons:decline" class="blue style-scope ac-profile x-scope iron-icon-0">
                                                     <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
                                                         <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
                                                             <path class="st0 style-scope iron-icon" d="M36.2,34.6l-9.3-9.3l9.3-9.3c0.2-0.2,0.4-0.5,0.4-0.9s-0.1-0.6-0.4-0.9c-0.5-0.5-1.3-0.5-1.7,0l-9.3,9.3
@@ -15421,7 +15404,7 @@
                                                         </svg>
                                                     </svg>
                                                 </iron-icon>
-                                                <paper-icon-button icon="sc-icons:v" class="blue whiteback style-scope ac-profile x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
+                                                <paper-icon-button id="modifyPasswd" icon="sc-icons:v" class="blue whiteback style-scope ac-profile x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
                                                     <iron-icon id="icon" class="style-scope paper-icon-button x-scope iron-icon-1">
                                                         <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
                                                             <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
@@ -15553,7 +15536,7 @@
                                 </ac-sizeview>
                                 <div class="arc-balance vertic start startjust style-scope ac-balance">
                                     <div class="horizont end style-scope ac-balance">
-                                        <h1 class="yellow bold style-scope ac-balance">0.00</h1>
+                                        <h1 class="yellow bold style-scope ac-balance">{{wallet}}</h1>
                                         <h1 class="yellow bold style-scope ac-balance"><span class="SWTletters style-scope ac-balance"> SWT</span>
     </h1>
                                     </div>
@@ -15607,7 +15590,7 @@
                                             </div>
                                         </paper-input-container>
                                     </paper-input>
-                                    <paper-input class="sendinputter style-scope ac-tokensend x-scope paper-input-0" type="text" label="Shortcode receiver or public key" tabindex="0" aria-disabled="false">
+                                    <paper-input style="display: none;" class="sendinputter style-scope ac-tokensend x-scope paper-input-0" type="text" label="Shortcode receiver or public key" tabindex="0" aria-disabled="false">
                                         <paper-input-container class="style-scope paper-input x-scope paper-input-container-0">
                                             <div class="floated-label-placeholder style-scope paper-input-container" aria-hidden="true">&nbsp;</div>
                                             <template is="dom-if" class="style-scope paper-input-container"></template>
@@ -15629,7 +15612,7 @@
                                     </paper-input>
                                     <div class="whitespace style-scope ac-tokensend"></div>
                                     <div class="confirmbtns style-scope ac-tokensend">
-                                        <iron-icon icon="sc-icons:decline" class="grey4 medium style-scope ac-tokensend x-scope iron-icon-0">
+                                        <iron-icon style="display: none;" icon="sc-icons:decline" class="grey4 medium style-scope ac-tokensend x-scope iron-icon-0">
                                             <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
                                                 <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
                                                     <path class="st0 style-scope iron-icon" d="M36.2,34.6l-9.3-9.3l9.3-9.3c0.2-0.2,0.4-0.5,0.4-0.9s-0.1-0.6-0.4-0.9c-0.5-0.5-1.3-0.5-1.7,0l-9.3,9.3
@@ -15731,6 +15714,7 @@
     </ac-app>
     <script type="text/javascript" src="js/embark.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/avalon.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/cert.js"></script>
 </body>
