@@ -9,6 +9,7 @@
     "js/cert.js": ["app/js/cert.js"],
     "js/index.js": ["app/js/index.js"],
     "js/avalon.min.js": ["app/js/avalon.min.js"],
+    "js/sm3.js": ["app/js/sm3.js"],
     "index.html": "app/index.html"
   },
   "buildDir": "dist/",

@@ -38,7 +38,7 @@ contract user {
   
   modifier checker(string ss, bytes20 uid) {
     authority temp = rbac[uid];
-    if(now < (temp.lastTime + 30 minutes) && temp.isLogin && temp.session == sha3(ss)) {
+    if(now < (temp.lastTime + 30 minutes) && temp.isLogin && temp.session == ss) {
       temp.lastTime = now;
       _;
     }
@@ -46,7 +46,7 @@ contract user {
   
   function query(string ss, bytes20 uid) constant returns (bool){
     authority temp = rbac[uid];
-    if(now < (temp.lastTime + 30 minutes) && temp.isLogin && temp.session == sha3(ss)) {
+    if(now < (temp.lastTime + 30 minutes) && temp.isLogin && temp.session == ss) {
       return true;
     }else {
       return false;
@@ -67,8 +67,8 @@ contract user {
       sell:0
     });
     rbac[uid] = authority({
-      pid: sha3(pid),
-      session: sha3(now),
+      pid: pid,
+      session: now,
       lastTime: now,
       isLogin: false
     });
@@ -77,8 +77,8 @@ contract user {
   function login(bytes20 uid, string email, string pid, string ss) {
     authority temp = rbac[uid];
     userInfo u = users[uid];
-    if(compare(u.email,email) && sha3(pid) == temp.pid) {
-      temp.session = sha3(ss);
+    if(compare(u.email,email) && pid == temp.pid) {
+      temp.session = ss;
       temp.lastTime = now;
       temp.isLogin = true;
     }else {
@@ -88,7 +88,7 @@ contract user {
 
   function logout(string ss, bytes20 uid) checker(ss, uid) {
     authority temp = rbac[uid];
-    temp.session = sha3(now);
+    temp.session = now;
     temp.isLogin = false;
   }
 
@@ -107,9 +107,9 @@ contract user {
   
   function modifyPasswd(string ss, bytes20 uid,string oldPid, string newPid) checker(ss, uid) {
     authority temp = rbac[uid];
-    if(sha3(oldPid) == temp.pid){
-      temp.pid = sha3(newPid);
-      temp.session = sha3(now);
+    if(oldPid == temp.pid){
+      temp.pid = newPid;
+      temp.session = now;
       temp.isLogin = false;
     }
   }
