@@ -15,7 +15,9 @@ var userInfo = avalon.define({
 	bio:"",
 	location:"",
 	address:address,
-	len:0
+	len:0,
+	sell:0,
+	txInfo:{}
 });
 
 $(function(){
@@ -95,11 +97,11 @@ $(function(){
 			return false;
 		}
 		var now = new Date();
-		localStorage.setItem("session",now.getTime());
+		localStorage.setItem("session",sm3(now.getTime().toString()));
 		refresh();
 		var button = $(this).parent();
 		button.attr("disabled","disabled");
-		user.login(address,email,password,session,{gas:500000}).then(function(res){
+		user.login(address,email,sm3(password),session,{gas:500000}).then(function(res){
 			waitForTx(res.transactionHash,function(){
 				user.query(session,address).then(function(res){
 					if(res == true){
@@ -119,22 +121,7 @@ $(function(){
 								});
 							}else{
 								contractOfPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: paper});
-								contractOfPaper.len().then(function(res){
-									var paperLength = res.toNumber();
-									if(paperLength > 0){
-										userInfo.len = paperLength;
-										avalon.scan();
-										for(var i = 0;i < paperLength;i++){
-											contractOfPaper.getAllPaperInfo(address,i).then(function(res){
-												userInfo.paper.push({
-													"hash":res[1],
-													"title":res[2],
-													"date":res[3]
-												});
-											});
-										}
-									}
-								});
+								getPaperList();
 							}
 							userInfo.wallet = info[2].toNumber();
 							userInfo.username = info[3];
@@ -146,6 +133,15 @@ $(function(){
 							}
 							userInfo.bio = info[6];
 							userInfo.location = info[7];
+							user.txNum(session,address).then(function(res){
+								userInfo.sell = res.toNumber();
+								if(userInfo.sell > 0){
+									user.txList(address).then(function(res){
+										userInfo.txInfo = res[userInfo.sell-1];
+										console.log(userInfo.txInfo);
+									});
+								}
+							});
 						});
 					}else{
 						alert("login false");
@@ -166,9 +162,12 @@ $(function(){
 	 * event:退出登录跳转首页
 	 */
 	$(document).on("click","#logout",function(){
-		$("#profile").removeClass("iron-selected");
-		$("#intro").addClass("iron-selected");
-		slidePage("blackcolor",true,"yellowback","vaultPage","welcome","none","blueback");
+		user.logout(session,address).then(function(res){
+			// no waitForTx
+			$("#profile").removeClass("iron-selected");
+			$("#intro").addClass("iron-selected");
+			slidePage("blackcolor",true,"yellowback","vaultPage","welcome","none","blueback");
+		});
 	});
 	/* position:个人信息页
 	 * event:点击叉叉返回home页
@@ -203,6 +202,44 @@ $(function(){
 	 */
 	$(document).on("click","#editInfo",function(){
 		editMyInfo();
+	});
+	/* position:个人信息页
+	 * event:删除账户
+	 */
+	$(document).on("click","#deletemyvault",function(){
+		user.deleteAccount(session,address).then(function(res){
+			localStorage.removeItem("uid");
+			localStorage.removeItem("session");
+			refresh();
+			$("#profile").removeClass("iron-selected");
+			$("#intro").addClass("iron-selected");
+			slidePage("blackcolor",true,"yellowback","vaultPage","welcome","none","blueback");
+		});
+	});
+	/* position:个人信息页
+	 * event:修改密码
+	 */
+	$(document).on("click","#modifyPasswd",function(){
+		var oldPasswd = $("#profile_old_passwd").val();
+		if(!checkPasswd(oldPasswd)){
+			alert("old password error!");
+			return false;
+		}
+		var newPasswd = $("#profile_new_passwd").val();
+		var repeatPasswd = $("#profile_repeat_passwd").val();
+		if(!checkPasswd(newPasswd,repeatPasswd)){
+			alert("new password error!");
+			return false;
+		}
+		user.modifyPasswd(session,address,sm3(oldPasswd),sm3(newPasswd)).then(function(res){
+			// no waitForTx
+			$("#profile").removeClass("iron-selected");
+			$("#vault").addClass("iron-selected");
+			$("#profile_old_passwd").val("");
+			$("#profile_new_passwd").val("");
+			$("#profile_repeat_passwd").val("");
+			slidePage("blackcolor",false,"blueback","vaultPage","unlock","block");
+		});
 	});
 	/* position:注册前须知页面
 	 * event:跳转注册页面
@@ -243,11 +280,12 @@ $(function(){
 		generateUid();
 		$("#createnew ac-password:eq(0)").css("display","none");
 		$("#createnew .loaderinit:eq(0)").html($("#loader_container").html());
-		user.register(address,firstPasswd,name,email,{gas:500000}).then(function(res){
+		user.register(address,sm3(firstPasswd),name,email,{gas:500000}).then(function(res){
 			waitForTx(res.transactionHash,function(){
 				user.users(address).then(function(res){
 					if(res[3] == ""){
 						alert("register false");
+						console.log(address);
 						localStorage.removeItem("uid");
 						refresh();
 					}else{
@@ -274,6 +312,25 @@ $(function(){
 		$("#walletview").removeClass("iron-selected");
 		$("#home").addClass("iron-selected");
 	});
+	/* position:充值页面
+	 * event:充值
+	 */
+	$(document).on("click","#addcoin",function(){
+		var coin = parseInt($("#coin_input").val());
+		if(coin == NaN || coin <= 0) return false;
+		$("#addcoin").attr("disabled","disabled");
+		user.recharge(session,address,coin).then(function(res){
+			waitForTx(res.transactionHash,function(){
+				user.users(address).then(function(res){
+					userInfo.wallet = res[2];
+					avalon.scan();
+					$("#addcoin").removeAttr("disabled");
+					$("#walletview").removeClass("iron-selected");
+					$("#home").addClass("iron-selected");
+				});
+			});
+		});
+	});
 	/* position:home页面
 	 * event:跳转到声明版权页面
 	 */
@@ -290,6 +347,40 @@ $(function(){
 		$("#importpk").removeClass("iron-selected");
 		$("#home").addClass("iron-selected");
 	});
+	/* position:声明版权页面
+	 * event:跳转到上传论文页面
+	 */
+	$(document).on("click","#importpk iron-icon:eq(2)",function(){
+		var title = $("#privatekeyinput input:eq(0)").val();
+		if(title == "") return false;
+		slidePage(false,false,false,"vaultPage","importfile");
+	});
+	/* position:上传论文页面
+	 * event:上传到IPFS
+	 */
+	$(document).on("click","#uploadpaper",function(){
+		$("#paperupload").click();
+	});
+	/* position:上传论文页面
+	 * event:上传到IPFS
+	 */
+	$(document).on("change","#paperupload",function(){
+		var url = $("#paperupload");
+		if(url.val() != ""){
+          	EmbarkJS.Storage.uploadFile(url).then(function(hash) {
+              contractOfPaper.addPaper(address,userInfo.username,hash,$("#privatekeyinput input:eq(0)").val(),true,{gas:500000}).then(function(res){
+              	waitForTx(res.transactionHash,function(){
+              		getPaperList();
+              		url.val("");
+              		$("#privatekeyinput input:eq(0)").val("");
+              		$("#vault").removeClass("iron-selected");
+              		$("#importfile").removeClass("iron-selected");
+              		$("#home").addClass("iron-selected");
+              	});
+              });
+            });
+		}
+	});
 	/* position:unknow
 	 */
 	$(document).on("click","#asJsonFile",function(){
@@ -302,8 +393,8 @@ $(function(){
 	 */
 	$(document).on("click","#importfile iron-icon:eq(0)",function(){
 		$("#vault").removeClass("iron-selected");
-		$("#intro").addClass("iron-selected");
-		slidePage("blackcolor",true,"yellowback","vaultPage","welcome","none","blueback");
+		$("#importfile").removeClass("iron-selected");
+		$("#home").addClass("iron-selected");
 	});
 	/* position:unknow
 	 */
@@ -427,5 +518,24 @@ function editMyInfo(){
 	    waitForTx(res.transactionHash,function(){
 	    	// do nothing
 	    });
+	});
+}
+
+function getPaperList(){
+	contractOfPaper.len().then(function(res){
+		var paperLength = res.toNumber();
+		if(paperLength > 0){
+			userInfo.len = paperLength;
+			for(var i = 0;i < paperLength;i++){
+				contractOfPaper.getAllPaperInfo(address,i).then(function(res){
+					userInfo.paper.push({
+						"hash":res[1],
+						"title":res[2],
+						"date":res[3]
+					});
+				});
+			}
+			avalon.scan();
+		}
 	});
 }

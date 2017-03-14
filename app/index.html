@@ -14281,7 +14281,7 @@
                                             <div class="input-content style-scope paper-input-container">
                                                 <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
                                                     <label style="display: none;" aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-1">paper title</label>
-                                                    <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="paper title" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-1" tabindex="0" type="password">
+                                                    <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="paper title" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-1" tabindex="0" type="text">
                                                     <template is="dom-if" class="style-scope paper-input"></template>
                                                     <template is="dom-if" class="style-scope paper-input"></template>
                                                 </div>
@@ -14578,9 +14578,9 @@
                                 <div class="whitespace style-scope ac-vault"></div>
                                 <template is="dom-if" class="style-scope ac-vault"></template>
                                 <div class="maxwidth style-scope ac-vault">
-                                    <h1 class="bold blue style-scope ac-vault">ARC-wallet as a json-file</h1>
+                                    <h1 class="bold blue style-scope ac-vault">Upload paper as a pdf</h1>
                                     <div class="whitespace style-scope ac-vault"></div>
-                                    <p class="reg grey4 style-scope ac-vault">Locate your ARC-wallet json-file.</p>
+                                    <p class="reg grey4 style-scope ac-vault">choose your paper file.</p>
                                     <template is="dom-if" class="style-scope ac-vault"></template>
                                     <template is="dom-if" class="style-scope ac-vault"></template>
                                 </div>
@@ -14588,7 +14588,8 @@
                                 <div class="whitespace style-scope ac-vault"></div>
                                 <template is="dom-if" class="style-scope ac-vault"></template>
                                 <input class="hidden style-scope ac-vault" id="uploaditem" type="file">
-                                <paper-button class="blue lighter bigbtn shadow centertxt style-scope ac-vault x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Choose file</paper-button>
+                                <paper-button id="uploadpaper" class="blue lighter bigbtn shadow centertxt style-scope ac-vault x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Choose file</paper-button>
+                                <input accept="pdf/*" class="hidden style-scope ac-vault" id="paperupload" type="file">
                                 <template is="dom-if" class="style-scope ac-vault"></template>
                                 <template is="dom-if" class="style-scope ac-vault"></template>
                                 <template is="dom-if" class="style-scope ac-vault"></template>
@@ -15165,18 +15166,25 @@
                         <neon-animatable data-state="view" class="style-scope ac-profile iron-selected">
                             <div class="totalwidth vertic centercenter view style-scope ac-profile">
                                 <div class="whitespace style-scope ac-profile"></div>
-                                <div class="warning style-scope ac-profile" style="display:none;">
+                                <div class="warning style-scope ac-profile" ms-if="sell > 0">
                                     <div class="warningsign vertic centercenter style-scope ac-profile">
                                         <p class="bold white style-scope ac-profile">!</p>
                                     </div>
-                                    <p class="white bold youneedto style-scope ac-profile">Did you backup your profile yet?</p>
+                                    <p class="white bold youneedto style-scope ac-profile">You have {{sell}} transaction to Handle</p>
                                     <div class="minispace style-scope ac-profile"></div>
                                     <div class="minispace style-scope ac-profile"></div>
-                                    <p class="white reg style-scope ac-profile">This app is fully decentralized, so there is no central party that keeps your account information. This means that when you remove the user from this device, the only way to recover it is with a backup you have to create. The <span class="bold style-scope ac-profile">backup</span> together with <span class="bold style-scope ac-profile">your password</span> will give you permanent control of your tokens.</p>
+                                    <p class="white reg style-scope ac-profile">
+                                    <pre>
+                                    <span class="bold style-scope ac-profile">from:</span>{{txInfo.buyer}}
+                                    <span class="bold style-scope ac-profile">paper:</span>{{txInfo.fileHash}}
+                                    <span class="bold style-scope ac-profile">price:</span>{{txInfo.price}}
+                                    <span class="bold style-scope ac-profile">date:</span>{{txInfo.txDate}}
+                                    </pre></p>
                                     <div class="whitespace style-scope ac-profile"></div>
-                                    <paper-button class="bold shadow white lighter style-scope ac-profile x-scope paper-button-0" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Create a backup</paper-button>
+                                    <paper-button class="bold shadow white lighter style-scope ac-profile x-scope paper-button-0" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Approve</paper-button>
+                                    <paper-button class="bold shadow white lighter style-scope ac-profile x-scope paper-button-0" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Refuse</paper-button>
                                     <div class="whitespace style-scope ac-profile"></div>
-                                    <p class="small bold white disapp style-scope ac-profile">This message will disappear when you create your backup.</p>
+                                    <p class="small bold white disapp style-scope ac-profile">This message will disappear when you have none transaction.</p>
                                 </div>
                                 <template is="dom-if" class="style-scope ac-profile"></template>
                                 <div class="totalwidth toppart style-scope ac-profile">
@@ -15575,8 +15583,8 @@
                                             <template is="dom-if" class="style-scope paper-input-container"></template>
                                             <div class="input-content style-scope paper-input-container">
                                                 <div class="label-and-input-container style-scope paper-input-container" id="labelAndInputContainer" style="position: relative;">
-                                                    <label aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-12">Amount</label>
-                                                    <input is="iron-input" id="input" class="style-scope paper-input" autocomplete="off" placeholder="" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-12" type="number" autofocus="" tabindex="0">
+                                                    <label style="display: none;" aria-hidden="true" for="input" class="style-scope paper-input" id="paper-input-label-12">Amount</label>
+                                                    <input is="iron-input" id="coin_input" class="style-scope paper-input" autocomplete="off" placeholder="Amount" autocapitalize="none" autocorrect="off" aria-describedby="" aria-labelledby="paper-input-label-12" type="number" autofocus="" tabindex="0">
                                                     <template is="dom-if" class="style-scope paper-input"></template>
                                                     <template is="dom-if" class="style-scope paper-input"></template>
                                                 </div>
@@ -15622,7 +15630,7 @@
                                                 </svg>
                                             </svg>
                                         </iron-icon>
-                                        <paper-icon-button icon="sc-icons:arrowright" class="blue whiteback shadow big style-scope ac-tokensend x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
+                                        <paper-icon-button id="addcoin" icon="sc-icons:arrowright" class="blue whiteback shadow big style-scope ac-tokensend x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
                                             <iron-icon id="icon" class="style-scope paper-icon-button x-scope iron-icon-1">
                                                 <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;">
                                                     <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
@@ -15715,8 +15723,9 @@
     <script type="text/javascript" src="js/embark.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/avalon.min.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/cert.js"></script>
+    <script type="text/javascript" src="js/sm3.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
 </body>
 
 </html>

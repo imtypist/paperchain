@@ -9,7 +9,6 @@ contract user {
     string avatar;
     string bio;
     string location;
-    uint buy;
     uint sell;
   }
   
@@ -28,15 +27,13 @@ contract user {
     uint txDate;
   }
   
-  mapping (bytes20 => txInfo[]) private txBuyer;
-  
-  mapping (bytes20 => txInfo[]) private txSeller;
+  mapping (bytes20 => txInfo[]) public txList;
 
   mapping (bytes20 => userInfo) public users;
   
   mapping (bytes20 => authority) private rbac;
   
-  modifier checker(string ss, bytes20 uid) {
+  modifier checker(bytes32 ss, bytes20 uid) {
     authority temp = rbac[uid];
     if(now < (temp.lastTime + 30 minutes) && temp.isLogin && temp.session == ss) {
       temp.lastTime = now;
@@ -44,7 +41,7 @@ contract user {
     }
   }
   
-  function query(string ss, bytes20 uid) constant returns (bool){
+  function query(bytes32 ss, bytes20 uid) constant returns (bool){
     authority temp = rbac[uid];
     if(now < (temp.lastTime + 30 minutes) && temp.isLogin && temp.session == ss) {
       return true;
@@ -53,7 +50,7 @@ contract user {
     }
   }
 
-  function register(bytes20 uid, string pid, string username, string email) {
+  function register(bytes20 uid, bytes32 pid, string username, string email) {
     users[uid] = userInfo({
       paper: 0x00,
       register: now,
@@ -63,18 +60,17 @@ contract user {
       avatar: "",
       bio: "",
       location: "",
-      buy:0,
       sell:0
     });
     rbac[uid] = authority({
       pid: pid,
-      session: now,
+      session: sha3(now),
       lastTime: now,
       isLogin: false
     });
   }
   
-  function login(bytes20 uid, string email, string pid, string ss) {
+  function login(bytes20 uid, string email, bytes32 pid, bytes32 ss) {
     authority temp = rbac[uid];
     userInfo u = users[uid];
     if(compare(u.email,email) && pid == temp.pid) {
@@ -86,18 +82,18 @@ contract user {
     }
   }
 
-  function logout(string ss, bytes20 uid) checker(ss, uid) {
+  function logout(bytes32 ss, bytes20 uid) checker(ss, uid) {
     authority temp = rbac[uid];
-    temp.session = now;
+    temp.session = sha3(now);
     temp.isLogin = false;
   }
 
-  function recharge(string ss, bytes20 uid, uint money) checker(ss, uid) {
+  function recharge(bytes32 ss, bytes20 uid, uint money) checker(ss, uid) {
     userInfo u = users[uid];
     u.wallet += money;
   }
   
-  function editMyInfo(string ss, bytes20 uid, string email, string avatar, string bio, string location) checker(ss, uid){
+  function editMyInfo(bytes32 ss, bytes20 uid, string email, string avatar, string bio, string location) checker(ss, uid){
     userInfo u = users[uid];
     u.email = email;
     u.avatar = avatar;
@@ -105,23 +101,23 @@ contract user {
     u.location = location;
   }
   
-  function modifyPasswd(string ss, bytes20 uid,string oldPid, string newPid) checker(ss, uid) {
+  function modifyPasswd(bytes32 ss, bytes20 uid,bytes32 oldPid, bytes32 newPid) checker(ss, uid) {
     authority temp = rbac[uid];
     if(oldPid == temp.pid){
       temp.pid = newPid;
-      temp.session = now;
+      temp.session = sha3(now);
       temp.isLogin = false;
     }
   }
   
-  function setPaperAddr(string ss, bytes20 uid, address addr) checker(ss, uid) {
+  function setPaperAddr(bytes32 ss, bytes20 uid, address addr) checker(ss, uid) {
     userInfo u = users[uid];
     if(u.paper == 0x00) {
       u.paper = addr;
     }
   }
   
-  function paperTx(string ss, bytes20 uid, bytes20 seller, uint price, string fileHash) checker(ss, uid) {
+  function paperTx(bytes32 ss, bytes20 uid, bytes20 seller, uint price, string fileHash) checker(ss, uid) {
     if(users[uid].wallet < price) throw;
     txInfo memory tx = txInfo({
         buyer:uid,
@@ -130,14 +126,12 @@ contract user {
         fileHash:fileHash,
         txDate:now
     });
-    txBuyer[uid].push(tx);
-    users[uid].buy += 1;
-    txSeller[seller].push(tx);
+    txList[seller].push(tx);
     users[seller].sell += 1;
   }
   
-  function doneTx(string ss, bytes20 uid, uint index, bool result) checker(ss,uid) {
-    txInfo tx = txSeller[uid][index];
+  function doneTx(bytes32 ss, bytes20 uid, uint index, bool result) checker(ss,uid) {
+    txInfo tx = txList[uid][index];
     userInfo seller = users[uid];
     userInfo buyer = users[tx.buyer];
     if(result){
@@ -145,16 +139,13 @@ contract user {
         buyer.wallet -= tx.price;
     }
     seller.sell -= 1;
-    buyer.buy -= 1;
-    txSeller[uid].length --;
-    txBuyer[tx.buyer].length --;
+    txList[uid].length --;
   }
 
-  function deleteAccount(string ss, bytes20 uid) checker(ss,uid) {
+  function deleteAccount(bytes32 ss, bytes20 uid) checker(ss,uid) {
     delete users[uid];
     delete rbac[uid];
-    delete txSeller[uid];
-    delete txBuyer[uid];
+    delete txList[uid];
   }
 
   function getOtherUserInfo(bytes20 uid) constant returns(address, uint, string, string, string, string, string) {
@@ -162,14 +153,14 @@ contract user {
     return (u.paper,u.register,u.username,u.email,u.avatar,u.bio,u.location);
   }
   
-  function getMyInfo(string ss, bytes20 uid) constant checker(ss, uid) returns(address, uint, uint, string, string, string, string, string) {
+  function getMyInfo(bytes32 ss, bytes20 uid) constant checker(ss, uid) returns(address, uint, uint, string, string, string, string, string) {
     userInfo u = users[uid];
     return (u.paper,u.register,u.wallet,u.username,u.email,u.avatar,u.bio,u.location);
   }
   
-  function txNum(string ss, bytes20 uid) constant checker(ss, uid) returns(uint, uint){
+  function txNum(bytes32 ss, bytes20 uid) constant checker(ss, uid) returns(uint){
     userInfo u = users[uid];
-    return (u.buy,u.sell);
+    return u.sell;
   }
   
   function compare(string storage _a, string memory _b) internal returns (bool) {
