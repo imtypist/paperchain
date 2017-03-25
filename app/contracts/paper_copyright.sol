@@ -5,7 +5,7 @@ contract PaperCopyright {
     string fileHash;
     string title;
     uint date;
-    bytes32 txHash;
+    uint blockNum;
     bool isPublic;
   }
 
@@ -19,7 +19,7 @@ contract PaperCopyright {
     creator = sender;
   }
 
-  function addPaper(bytes20 sender,string author,string file,string title,bool isPublic,bytes32 tx) {
+  function addPaper(bytes20 sender,string author,string file,string title,bool isPublic) {
     if(sender != creator) throw;
     papers.push(Paper({
       author: author,
@@ -27,12 +27,12 @@ contract PaperCopyright {
       title: title,
       date: now,
       isPublic: isPublic,
-      txHash:tx
+      blockNum:block.number
     }));
     len += 1;
   }
 
-  function editPaper(bytes20 sender,uint index,string author,string file,string title,bool isPublic,bytes32 tx) {
+  function editPaper(bytes20 sender,uint index,string author,string file,string title,bool isPublic) {
     if(sender != creator) throw;
     papers[index] = Paper({
       author: author,
@@ -40,7 +40,7 @@ contract PaperCopyright {
       title: title,
       date: now,
       isPublic: isPublic,
-      txHash:tx
+      blockNum:block.number
     });
   }
   
@@ -55,7 +55,7 @@ contract PaperCopyright {
               title: p.title,
               date: p.date,
               isPublic: p.isPublic,
-              txHash:p.txHash
+              blockNum:block.number
             });
             papers.length --;
             len --;
@@ -64,16 +64,16 @@ contract PaperCopyright {
     }
   }
 
-  function getAllPaperInfo(bytes20 sender,uint index) constant returns(string,string,string,uint,bool,bytes32){
+  function getAllPaperInfo(bytes20 sender,uint index) constant returns(string,string,string,uint,bool,uint){
     if(sender != creator) throw;
     Paper p = papers[index];
-    return (p.author,p.fileHash,p.title,p.date,p.isPublic,p.txHash);
+    return (p.author,p.fileHash,p.title,p.date,p.isPublic,p.blockNum);
   }
 
-  function getPaperInfo(uint index) constant returns(string,string,string,uint,bytes32){
+  function getPaperInfo(uint index) constant returns(string,string,string,uint,uint){
     Paper p = papers[index];
     if(p.isPublic){
-      return (p.author,p.fileHash,p.title,p.date,p.txHash);
+      return (p.author,p.fileHash,p.title,p.date,p.blockNum);
     }else{
       return ('false','false','false',0,0);
     }

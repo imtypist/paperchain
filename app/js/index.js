@@ -32,9 +32,17 @@ $(function(){
 		if(address == null){
 			slidePage("blackcolor",false,"yellowback","createwalletpgs","newuser","block");
 		}else{
-			$("#intro").removeClass("iron-selected");
-			$("#vault").addClass("iron-selected");	
-			slidePage("blackcolor",false,"yellowback","createwalletpgs","unlock","block");
+			user.query(session,address).then(function(res){
+				if(res == true){
+					enterHomePage();
+					$("#intro").removeClass("iron-selected");
+					$("#home").addClass("iron-selected");
+				}else{
+					$("#intro").removeClass("iron-selected");
+					$("#vault").addClass("iron-selected");	
+					slidePage("blackcolor",false,"yellowback","createwalletpgs","unlock","block");
+				}
+			});
 		}
 	});
 	/* position:intro下的页面通用
@@ -109,41 +117,8 @@ $(function(){
 						alert("login success");
 						$("#vault").removeClass("iron-selected");
 						$("#home").addClass("iron-selected");
-						user.users(address).then(function(info){
-							var paper = info[0];
-							if(paper == "0x0000000000000000000000000000000000000000"){
-								PaperCopyright.deploy([address],{gas:4700000}).then(function(res){
-									contractOfPaper = res;
-									user.setPaperAddr(session,address,contractOfPaper.address,{gas:500000}).then(function(res){
-										waitForTx(res.transactionHash,function(){
-											// do nothing
-										});
-									});
-								});
-							}else{
-								contractOfPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: paper});
-								getPaperList();
-							}
-							userInfo.sell = info[2].toNumber();
-							if(userInfo.sell > 0){
-								user.txList(address).then(function(res){
-									userInfo.txInfo = res[userInfo.sell-1];
-									console.log(userInfo.txInfo);
-								});
-							}
-							userInfo.wallet = info[1].toNumber();
-							userInfo.username = info[3];
-							userInfo.phone = info[4];
-							userInfo.email = info[5];
-							var avatar = info[6];
-							if(avatar != ""){
-								userInfo.hash = avatar;
-								userInfo.avatar = EmbarkJS.Storage.getUrl(avatar);
-							}
-							userInfo.bio = info[7];
-							userInfo.location = info[8];
-							avalon.scan();
-						});
+						// load info
+						enterHomePage();
 					}else{
 						alert("login false");
 					}
@@ -373,12 +348,18 @@ $(function(){
 	 */
 	$(document).on("change","#paperupload",function(){
 		var url = $("#paperupload");
+		$("#uploadpaper").hide();
+		var insert = document.createElement("div");
+		$(insert).attr("id","temp_load").html($("#loader_container").html());
+		url.after($(insert));
 		if(url.val() != ""){
           	EmbarkJS.Storage.uploadFile(url).then(function(hash) {
               contractOfPaper.addPaper(address,userInfo.username,hash,$("#privatekeyinput input:eq(0)").val(),true,{gas:500000}).then(function(res){
               	waitForTx(res.transactionHash,function(){
               		getPaperList();
               		url.val("");
+              		$("#temp_load").remove();
+              		$("#uploadpaper").show();
               		$("#privatekeyinput input:eq(0)").val("");
               		$("#vault").removeClass("iron-selected");
               		$("#importfile").removeClass("iron-selected");
@@ -527,6 +508,7 @@ function waitForTx(res,func){
 
 function editMyInfo(){
 	user.editMyInfo(session,address,$("#profile_email").val(),userInfo.hash,$("#profile_bio").val(),$("#profile_location").val(),{gas:500000}).then(function(res){
+	    alert("modify success!");
 	    waitForTx(res.transactionHash,function(){
 	    	// do nothing
 	    });
@@ -544,11 +526,57 @@ function getPaperList(){
 					userInfo.paper.push({
 						"hash":res[1],
 						"title":res[2],
-						"date":res[3]
+						"date":transformTimestamp(res[3]),
+						"isPublic":res[4],
+						"blockNum":res[5].toNumber()
 					});
 				});
 			}
 			avalon.scan();
 		}
+	});
+}
+
+function transformTimestamp(date){
+	var timestamp = parseInt(date + "000");
+	var transform = new Date(timestamp);
+	return transform.getFullYear().toString() + "/" + (transform.getMonth() + 1).toString() + "/" + transform.getDate().toString() + " " + transform.getHours().toString() + ":" + transform.getMinutes().toString();
+}
+
+function enterHomePage(){
+	user.users(address).then(function(info){
+		var paper = info[0];
+		if(paper == "0x0000000000000000000000000000000000000000"){
+			PaperCopyright.deploy([address],{gas:4700000}).then(function(res){
+				contractOfPaper = res;
+				user.setPaperAddr(session,address,contractOfPaper.address,{gas:500000}).then(function(res){
+					waitForTx(res.transactionHash,function(){
+						// do nothing
+					});
+				});
+			});
+		}else{
+			contractOfPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: paper});
+			getPaperList();
+		}
+		userInfo.sell = info[2].toNumber();
+		if(userInfo.sell > 0){
+			user.txList(address).then(function(res){
+				userInfo.txInfo = res[userInfo.sell-1];
+				console.log(userInfo.txInfo);
+			});
+		}
+		userInfo.wallet = info[1].toNumber();
+		userInfo.username = info[3];
+		userInfo.phone = info[4];
+		userInfo.email = info[5];
+		var avatar = info[6];
+		if(avatar != ""){
+			userInfo.hash = avatar;
+			userInfo.avatar = EmbarkJS.Storage.getUrl(avatar);
+		}
+		userInfo.bio = info[7];
+		userInfo.location = info[8];
+		avalon.scan();
 	});
 }
