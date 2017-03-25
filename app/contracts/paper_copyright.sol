@@ -5,6 +5,7 @@ contract PaperCopyright {
     string fileHash;
     string title;
     uint date;
+    bytes32 txHash;
     bool isPublic;
   }
 
@@ -18,26 +19,28 @@ contract PaperCopyright {
     creator = sender;
   }
 
-  function addPaper(bytes20 sender,string author,string file,string title,bool isPublic) {
+  function addPaper(bytes20 sender,string author,string file,string title,bool isPublic,bytes32 tx) {
     if(sender != creator) throw;
     papers.push(Paper({
       author: author,
       fileHash: file,
       title: title,
       date: now,
-      isPublic: isPublic
+      isPublic: isPublic,
+      txHash:tx
     }));
     len += 1;
   }
 
-  function editPaper(bytes20 sender,uint index,string author,string file,string title,bool isPublic) {
+  function editPaper(bytes20 sender,uint index,string author,string file,string title,bool isPublic,bytes32 tx) {
     if(sender != creator) throw;
     papers[index] = Paper({
       author: author,
       fileHash: file,
       title: title,
       date: now,
-      isPublic: isPublic
+      isPublic: isPublic,
+      txHash:tx
     });
   }
   
@@ -51,7 +54,8 @@ contract PaperCopyright {
               fileHash: p.fileHash,
               title: p.title,
               date: p.date,
-              isPublic: p.isPublic
+              isPublic: p.isPublic,
+              txHash:p.txHash
             });
             papers.length --;
             len --;
@@ -60,18 +64,18 @@ contract PaperCopyright {
     }
   }
 
-  function getAllPaperInfo(bytes20 sender,uint index) constant returns(string,string,string,uint,bool){
+  function getAllPaperInfo(bytes20 sender,uint index) constant returns(string,string,string,uint,bool,bytes32){
     if(sender != creator) throw;
     Paper p = papers[index];
-    return (p.author,p.fileHash,p.title,p.date,p.isPublic);
+    return (p.author,p.fileHash,p.title,p.date,p.isPublic,p.txHash);
   }
 
-  function getPaperInfo(uint index) constant returns(string,string,string,uint){
+  function getPaperInfo(uint index) constant returns(string,string,string,uint,bytes32){
     Paper p = papers[index];
     if(p.isPublic){
-      return (p.author,p.fileHash,p.title,p.date);
+      return (p.author,p.fileHash,p.title,p.date,p.txHash);
     }else{
-      return ('false','false','false',0);
+      return ('false','false','false',0,0);
     }
   }
   
@@ -79,13 +83,12 @@ contract PaperCopyright {
     bytes storage a = bytes(_a);
     bytes memory b = bytes(_b);
     if (a.length != b.length)
-    	return false;
+      return false;
     // @todo unroll this loop
     for (uint i = 0; i < a.length; i ++)
-    	if (a[i] != b[i])
-    		return false;
+      if (a[i] != b[i])
+        return false;
     return true;
   }
 
 }
-

@@ -11,6 +11,7 @@ var userInfo = avalon.define({
 	username:"username",
 	email:"",
 	hash:"",
+	phone:"",
 	avatar:"img/unnamed.jpg",
 	bio:"",
 	location:"",
@@ -86,9 +87,9 @@ $(function(){
 	 * event:进入home页面
 	 */
 	$(document).on("click","#unlock iron-icon:eq(1)",function(){
-		var email = $("#login_email").val();
-		if(!checkEmail(email)){
-			alert("enter your email");
+		var phone = $("#login_phone").val();
+		if(!checkPhone(phone)){
+			alert("enter your phone");
 			return false;
 		}
 		var password = $("#login_passwd").val();
@@ -101,7 +102,7 @@ $(function(){
 		refresh();
 		var button = $(this).parent();
 		button.attr("disabled","disabled");
-		user.login(address,email,sm3(password),session,{gas:500000}).then(function(res){
+		user.login(address,phone,sm3(password),session,{gas:500000}).then(function(res){
 			waitForTx(res.transactionHash,function(){
 				user.query(session,address).then(function(res){
 					if(res == true){
@@ -123,25 +124,25 @@ $(function(){
 								contractOfPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: paper});
 								getPaperList();
 							}
-							userInfo.wallet = info[2].toNumber();
+							userInfo.sell = info[2].toNumber();
+							if(userInfo.sell > 0){
+								user.txList(address).then(function(res){
+									userInfo.txInfo = res[userInfo.sell-1];
+									console.log(userInfo.txInfo);
+								});
+							}
+							userInfo.wallet = info[1].toNumber();
 							userInfo.username = info[3];
-							userInfo.email = info[4];
-							var avatar = info[5];
+							userInfo.phone = info[4];
+							userInfo.email = info[5];
+							var avatar = info[6];
 							if(avatar != ""){
 								userInfo.hash = avatar;
 								userInfo.avatar = EmbarkJS.Storage.getUrl(avatar);
 							}
-							userInfo.bio = info[6];
-							userInfo.location = info[7];
-							user.txNum(session,address).then(function(res){
-								userInfo.sell = res.toNumber();
-								if(userInfo.sell > 0){
-									user.txList(address).then(function(res){
-										userInfo.txInfo = res[userInfo.sell-1];
-										console.log(userInfo.txInfo);
-									});
-								}
-							});
+							userInfo.bio = info[7];
+							userInfo.location = info[8];
+							avalon.scan();
 						});
 					}else{
 						alert("login false");
@@ -261,6 +262,11 @@ $(function(){
 	 * event:跳转登录页
 	 */
 	$(document).on("click","#createnew iron-icon:eq(1)",function(){
+		var phone = $("#register_phone").val();
+		if(!checkPhone(phone)){
+			alert("enter your phone!");
+			return false;
+		}
 		var email = $("#register_email").val();
 		if(!checkEmail(email)){
 			alert("enter your email!");
@@ -280,7 +286,7 @@ $(function(){
 		generateUid();
 		$("#createnew ac-password:eq(0)").css("display","none");
 		$("#createnew .loaderinit:eq(0)").html($("#loader_container").html());
-		user.register(address,sm3(firstPasswd),name,email,{gas:500000}).then(function(res){
+		user.register(address,sm3(firstPasswd),name,email,phone,{gas:500000}).then(function(res){
 			waitForTx(res.transactionHash,function(){
 				user.users(address).then(function(res){
 					if(res[3] == ""){
@@ -322,8 +328,9 @@ $(function(){
 		user.recharge(session,address,coin).then(function(res){
 			waitForTx(res.transactionHash,function(){
 				user.users(address).then(function(res){
-					userInfo.wallet = res[2];
+					userInfo.wallet = res[1];
 					avalon.scan();
+					$("#coin_input").val("");
 					$("#addcoin").removeAttr("disabled");
 					$("#walletview").removeClass("iron-selected");
 					$("#home").addClass("iron-selected");
@@ -477,6 +484,11 @@ function checkName(name){
 		return true;
 }
 
+function checkPhone(phone){
+	var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+	return reg.test(phone); //true
+}
+
 function checkPasswd(first,second){
 	if(arguments.length == 1){
 		if(first == "" || first.length < 5)
@@ -526,6 +538,7 @@ function getPaperList(){
 		var paperLength = res.toNumber();
 		if(paperLength > 0){
 			userInfo.len = paperLength;
+			userInfo.paper = [];
 			for(var i = 0;i < paperLength;i++){
 				contractOfPaper.getAllPaperInfo(address,i).then(function(res){
 					userInfo.paper.push({

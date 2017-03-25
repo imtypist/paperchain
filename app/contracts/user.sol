@@ -2,20 +2,21 @@ pragma solidity ^0.4.7;
 contract user {
   struct userInfo {
     address paper;
-    uint register;
     uint wallet;
+    uint sell;
     string username;
+    string phone;
     string email;
     string avatar;
     string bio;
     string location;
-    uint sell;
   }
   
   struct authority {
     bytes32 pid;
     bytes32 session;
     uint lastTime;
+    uint register;
     bool isLogin;
   }
   
@@ -23,8 +24,8 @@ contract user {
     bytes20 buyer;
     bytes20 seller;
     uint price;
-    string fileHash;
     uint txDate;
+    string fileHash;
   }
   
   mapping (bytes20 => txInfo[]) public txList;
@@ -35,7 +36,7 @@ contract user {
   
   modifier checker(bytes32 ss, bytes20 uid) {
     authority temp = rbac[uid];
-    if(now < (temp.lastTime + 30 minutes) && temp.isLogin && temp.session == ss) {
+    if(now < (temp.lastTime + 30 minutes) && temp.isLogin && temp.session == sha3(ss)) {
       temp.lastTime = now;
       _;
     }
@@ -43,38 +44,39 @@ contract user {
   
   function query(bytes32 ss, bytes20 uid) constant returns (bool){
     authority temp = rbac[uid];
-    if(now < (temp.lastTime + 30 minutes) && temp.isLogin && temp.session == ss) {
+    if(now < (temp.lastTime + 30 minutes) && temp.isLogin && temp.session == sha3(ss)) {
       return true;
     }else {
       return false;
     }
   }
 
-  function register(bytes20 uid, bytes32 pid, string username, string email) {
+  function register(bytes20 uid, bytes32 pid, string username, string email, string phone) {
     users[uid] = userInfo({
       paper: 0x00,
-      register: now,
       wallet: 0,
       username: username,
       email: email,
       avatar: "",
       bio: "",
       location: "",
-      sell:0
+      sell:0,
+      phone:phone
     });
     rbac[uid] = authority({
       pid: pid,
+      register: now,
       session: sha3(now),
       lastTime: now,
       isLogin: false
     });
   }
   
-  function login(bytes20 uid, string email, bytes32 pid, bytes32 ss) {
+  function login(bytes20 uid, string phone, bytes32 pid, bytes32 ss) {
     authority temp = rbac[uid];
     userInfo u = users[uid];
-    if(compare(u.email,email) && pid == temp.pid) {
-      temp.session = ss;
+    if(compare(u.phone,phone) && pid == temp.pid) {
+      temp.session = sha3(ss);
       temp.lastTime = now;
       temp.isLogin = true;
     }else {
@@ -148,19 +150,14 @@ contract user {
     delete txList[uid];
   }
 
-  function getOtherUserInfo(bytes20 uid) constant returns(address, uint, string, string, string, string, string) {
+  function getOtherUserInfo(bytes20 uid) constant returns(address, string, string, string, string, string) {
     userInfo u = users[uid];
-    return (u.paper,u.register,u.username,u.email,u.avatar,u.bio,u.location);
+    return (u.paper,u.username,u.email,u.avatar,u.bio,u.location);
   }
   
-  function getMyInfo(bytes32 ss, bytes20 uid) constant checker(ss, uid) returns(address, uint, uint, string, string, string, string, string) {
+  function getMyInfo(bytes32 ss, bytes20 uid) constant checker(ss, uid) returns(address, uint, string, string, string, string, string) {
     userInfo u = users[uid];
-    return (u.paper,u.register,u.wallet,u.username,u.email,u.avatar,u.bio,u.location);
-  }
-  
-  function txNum(bytes32 ss, bytes20 uid) constant checker(ss, uid) returns(uint){
-    userInfo u = users[uid];
-    return u.sell;
+    return (u.paper,u.wallet,u.username,u.email,u.avatar,u.bio,u.location);
   }
   
   function compare(string storage _a, string memory _b) internal returns (bool) {
