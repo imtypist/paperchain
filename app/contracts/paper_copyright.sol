@@ -7,6 +7,7 @@ contract PaperCopyright {
     uint date;
     uint blockNum;
     bool isPublic;
+    uint index;
   }
 
   bytes20 private creator;
@@ -27,7 +28,8 @@ contract PaperCopyright {
       title: title,
       date: now,
       isPublic: isPublic,
-      blockNum:block.number
+      blockNum:block.number,
+      index:len
     }));
     len += 1;
   }
@@ -40,7 +42,8 @@ contract PaperCopyright {
       title: title,
       date: now,
       isPublic: isPublic,
-      blockNum:block.number
+      blockNum:block.number,
+      index:index
     });
   }
   
@@ -55,7 +58,8 @@ contract PaperCopyright {
               title: p.title,
               date: p.date,
               isPublic: p.isPublic,
-              blockNum:block.number
+              blockNum:p.blockNum,
+              index:p.index
             });
             papers.length --;
             len --;
@@ -64,18 +68,18 @@ contract PaperCopyright {
     }
   }
 
-  function getAllPaperInfo(bytes20 sender,uint index) constant returns(string,string,string,uint,bool,uint){
+  function getAllPaperInfo(bytes20 sender,uint index) constant returns(string,string,string,uint,bool,uint,uint){
     if(sender != creator) throw;
     Paper p = papers[index];
-    return (p.author,p.fileHash,p.title,p.date,p.isPublic,p.blockNum);
+    return (p.author,p.fileHash,p.title,p.date,p.isPublic,p.blockNum,p.index);
   }
 
-  function getPaperInfo(uint index) constant returns(string,string,string,uint,uint){
+  function getPaperInfo(uint index) constant returns(string,string,string,uint,uint,uint){
     Paper p = papers[index];
     if(p.isPublic){
-      return (p.author,p.fileHash,p.title,p.date,p.blockNum);
+      return (p.author,p.fileHash,p.title,p.date,p.blockNum,p.index);
     }else{
-      return ('false','false','false',0,0);
+      return ('false','false','false',0,0,0);
     }
   }
   

@@ -19,7 +19,8 @@ var userInfo = avalon.define({
 	address:address,
 	len:0,
 	sell:0,
-	txInfo:{}
+	txInfo:{},
+	singlePaper:{}
 });
 
 $(function(){
@@ -334,7 +335,7 @@ $(function(){
 	/* position:声明版权页面
 	 * event:跳转到上传论文页面
 	 */
-	$(document).on("click","#importpk iron-icon:eq(2)",function(){
+	$(document).on("click","#importpk iron-icon:eq(1)",function(){
 		var title = $("#privatekeyinput input:eq(0)").val();
 		if(title == "") return false;
 		slidePage(false,false,false,"vaultPage","importfile");
@@ -356,12 +357,13 @@ $(function(){
 		url.after($(insert));
 		if(url.val() != ""){
           	EmbarkJS.Storage.uploadFile(url).then(function(hash) {
-              contractOfPaper.addPaper(address,userInfo.username,hash,$("#privatekeyinput input:eq(0)").val(),true,{gas:500000}).then(function(res){
+              contractOfPaper.addPaper(address,userInfo.username,hash,$("#privatekeyinput input:eq(0)").val(),$("#isPublic").is(":checked"),{gas:500000}).then(function(res){
               	waitForTx(res.transactionHash,function(){
               		getPaperList();
               		url.val("");
               		$("#temp_load").remove();
               		$("#uploadpaper").show();
+					document.getElementById("isPublic").checked = false;
               		$("#privatekeyinput input:eq(0)").val("");
               		$("#vault").removeClass("iron-selected");
               		$("#importfile").removeClass("iron-selected");
@@ -393,12 +395,16 @@ $(function(){
 						userInfo.paper = [];
 						for(var i = 0;i < paperLength;i++){
 							guestPaper.getPaperInfo(i).then(function(res){
-								userInfo.paper.push({
-									"hash":res[1],
-									"title":res[2],
-									"date":transformTimestamp(res[3]),
-									"blockNum":res[4].toNumber()
-								});
+								if(res[4].toNumber() == 0){
+									userInfo.len --;
+								}else{
+									userInfo.paper.push({
+										"hash":res[1],
+										"title":res[2],
+										"date":transformTimestamp(res[3]),
+										"blockNum":res[4].toNumber()
+									});
+								}
 							});
 						}
 					}
@@ -409,13 +415,54 @@ $(function(){
 				if(avatar != ""){
 					userInfo.hash = avatar;
 					userInfo.avatar = EmbarkJS.Storage.getUrl(avatar);
+				}else{
+					userInfo.avatar = "img/unnamed.jpg";
 				}
+				userInfo.email = res[5];
+				userInfo.bio = res[7];
+				userInfo.location = res[8];
 				avalon.scan();
 				$("#intro").removeClass("iron-selected");
 				$("#guest_home").addClass("iron-selected");
+				$("#input_guest").val("");
 				slidePage("blackcolor",false,"yellowback","createwalletpgs","guest_home","block");
 			}
 		});
+	});
+	/* position:guest page
+	 * event:back to welcome
+	 */
+	$(document).on("click","#backtowelcome",function(){
+		$("#guest_home").removeClass("iron-selected");
+		$("#intro").addClass("iron-selected");
+		slidePage("blackcolor",true,"yellowback","createwalletpgs","welcome","none");
+	});
+	/* position:home
+	 * event:jump to owner paper page
+	 */
+	$(document).on("click",".ownerpaper",function(){
+		userInfo.singlePaper = {};
+		var index = $(this).attr("index");
+		contractOfPaper.getAllPaperInfo(address,parseInt(index)).then(function(res){
+			userInfo.singlePaper = {
+				"index":index,
+				"filehash":res[1],
+				"title":res[2],
+				"date":transformTimestamp(res[3]),
+				"isPublic":res[4],
+				"blockNum":res[5]
+			};
+			avalon.scan();
+			$("#home").removeClass("iron-selected");
+			$("#singlepaper").addClass("iron-selected");
+		});
+	});
+	/* position:owner paper page
+	 * event:back to home
+	 */
+	$(document).on("click","#singlepaper iron-icon:eq(0)",function(){
+		$("#singlepaper").removeClass("iron-selected");
+		$("#home").addClass("iron-selected");
 	});
 	/* position:unknow
 	 */
@@ -569,14 +616,16 @@ function editMyInfo(){
 }
 
 function getPaperList(){
+	userInfo.paper = [];
+	userInfo.len = 0;
 	contractOfPaper.len().then(function(res){
 		var paperLength = res.toNumber();
 		if(paperLength > 0){
 			userInfo.len = paperLength;
-			userInfo.paper = [];
 			for(var i = 0;i < paperLength;i++){
 				contractOfPaper.getAllPaperInfo(address,i).then(function(res){
 					userInfo.paper.push({
+						"index":res[6].toNumber(),
 						"hash":res[1],
 						"title":res[2],
 						"date":transformTimestamp(res[3]),
@@ -608,11 +657,13 @@ function enterHomePage(){
 					});
 				});
 			});
+			userInfo.paper = [];
 		}else{
 			contractOfPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: paper});
 			getPaperList();
 		}
 		userInfo.sell = info[2].toNumber();
+		userInfo.address = address;
 		if(userInfo.sell > 0){
 			user.txList(address).then(function(res){
 				userInfo.txInfo = res[userInfo.sell-1];
@@ -627,6 +678,8 @@ function enterHomePage(){
 		if(avatar != ""){
 			userInfo.hash = avatar;
 			userInfo.avatar = EmbarkJS.Storage.getUrl(avatar);
+		}else{
+			userInfo.avatar = "img/unnamed.jpg";
 		}
 		userInfo.bio = info[7];
 		userInfo.location = info[8];
