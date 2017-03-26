@@ -2,6 +2,7 @@ var address;
 var session;
 refresh();
 var contractOfPaper;
+var guestPaper;
 EmbarkJS.Storage.setProvider('ipfs',{server: 'localhost', port: '5001'});
 
 var userInfo = avalon.define({
@@ -33,6 +34,7 @@ $(function(){
 			slidePage("blackcolor",false,"yellowback","createwalletpgs","newuser","block");
 		}else{
 			user.query(session,address).then(function(res){
+				console.log(res);
 				if(res == true){
 					enterHomePage();
 					$("#intro").removeClass("iron-selected");
@@ -369,6 +371,52 @@ $(function(){
             });
 		}
 	});
+	/* position:welcome主页
+	 * event:游客页面
+	 */
+	$(document).on("click","#guest_addr",function(){
+		var addr = $("#input_guest").val();
+		if(!checkAddr(addr)){
+			alert("addr is not correct!");
+			return false;
+		}
+		user.users(addr).then(function(res){
+			if(res[0] == '0x0000000000000000000000000000000000000000'){
+				alert("not found such person!");
+				return false;
+			}else{
+				guestPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: res[0]});
+				guestPaper.len().then(function(res){
+					var paperLength = res.toNumber();
+					if(paperLength > 0){
+						userInfo.len = paperLength;
+						userInfo.paper = [];
+						for(var i = 0;i < paperLength;i++){
+							guestPaper.getPaperInfo(i).then(function(res){
+								userInfo.paper.push({
+									"hash":res[1],
+									"title":res[2],
+									"date":transformTimestamp(res[3]),
+									"blockNum":res[4].toNumber()
+								});
+							});
+						}
+					}
+				});
+				userInfo.username = res[3];
+				userInfo.address = addr;
+				var avatar = res[6];
+				if(avatar != ""){
+					userInfo.hash = avatar;
+					userInfo.avatar = EmbarkJS.Storage.getUrl(avatar);
+				}
+				avalon.scan();
+				$("#intro").removeClass("iron-selected");
+				$("#guest_home").addClass("iron-selected");
+				slidePage("blackcolor",false,"yellowback","createwalletpgs","guest_home","block");
+			}
+		});
+	});
 	/* position:unknow
 	 */
 	$(document).on("click","#asJsonFile",function(){
@@ -468,6 +516,11 @@ function checkName(name){
 function checkPhone(phone){
 	var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
 	return reg.test(phone); //true
+}
+
+function checkAddr(addr){
+	var reg = /^0x[0-9a-f]{40}$/;
+	return reg.test(addr);
 }
 
 function checkPasswd(first,second){
