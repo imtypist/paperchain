@@ -13,15 +13,8 @@ function generateCert(title,author,date,blocknum,txhash){
 		ctx.fillText(author,180,383);
 		ctx.fillText(date,180,428);
 		ctx.fillText(blocknum,220,470);
-		ctx.font = "15px 黑体";
 		ctx.fillText(txhash.slice(0,18)+'...',235,516);
-		var img = document.createElement("img");
-		img.src = cert.toDataURL();
-		img.style.width = "90%";
-		img.style.top = "50px";
-		img.style.left = "5%";
-		img.style.zIndex = 1000;
-		img.style.position = "absolute";
-		document.body.appendChild(img);
+		$("#cert_container > img:eq(0)").attr("src",cert.toDataURL());
+		$("#cert_container").show();
 	}
 }

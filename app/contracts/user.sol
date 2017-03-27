@@ -25,6 +25,7 @@ contract user {
     bytes20 seller;
     uint price;
     uint txDate;
+    uint index;
     string fileHash;
   }
   
@@ -119,15 +120,17 @@ contract user {
     }
   }
   
-  function paperTx(bytes32 ss, bytes20 uid, bytes20 seller, uint price, string fileHash) checker(ss, uid) {
+  function paperTx(bytes32 ss, bytes20 uid, bytes20 seller, uint price, uint index, string file) checker(ss, uid) {
     if(users[uid].wallet < price) throw;
     txInfo memory tx = txInfo({
         buyer:uid,
         seller:seller,
         price:price,
-        fileHash:fileHash,
-        txDate:now
+        index:index,
+        txDate:now,
+        fileHash:file
     });
+    users[uid].wallet -= price;
     txList[seller].push(tx);
     users[seller].sell += 1;
   }
@@ -138,10 +141,16 @@ contract user {
     userInfo buyer = users[tx.buyer];
     if(result){
         seller.wallet += tx.price;
-        buyer.wallet -= tx.price;
+    }else{
+        buyer.wallet += tx.price;
     }
     seller.sell -= 1;
     txList[uid].length --;
+  }
+  
+  function getTx(bytes32 ss, bytes20 uid,uint index) constant checker(ss, uid) returns(bytes20,string,uint,uint,uint){
+    txInfo t = txList[uid][index];
+    return (t.buyer,t.fileHash,t.price,t.txDate,t.index);
   }
 
   function deleteAccount(bytes32 ss, bytes20 uid) checker(ss,uid) {

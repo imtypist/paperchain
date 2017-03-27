@@ -47,25 +47,20 @@ contract PaperCopyright {
     });
   }
   
-  function deletePaper(bytes20 sender,string fileHash) {
+  function deletePaper(bytes20 sender,uint index) {
     if(sender != creator) throw;
-    for(var i = 0;i < len;i++) {
-        if(compare(papers[i].fileHash,fileHash)) {
-            Paper p = papers[len-1];
-            papers[i] = Paper({
-              author: p.author,
-              fileHash: p.fileHash,
-              title: p.title,
-              date: p.date,
-              isPublic: p.isPublic,
-              blockNum:p.blockNum,
-              index:p.index
-            });
-            papers.length --;
-            len --;
-            break;
-        }
-    }
+    Paper p = papers[len-1];
+    papers[index] = Paper({
+        author: p.author,
+        fileHash: p.fileHash,
+        title: p.title,
+        date: p.date,
+        isPublic: p.isPublic,
+        blockNum:p.blockNum,
+        index:index
+    });
+    papers.length --;
+    len --;
   }
 
   function getAllPaperInfo(bytes20 sender,uint index) constant returns(string,string,string,uint,bool,uint,uint){
@@ -81,18 +76,6 @@ contract PaperCopyright {
     }else{
       return ('false','false','false',0,0,0);
     }
-  }
-  
-  function compare(string storage _a, string memory _b) internal returns (bool) {
-    bytes storage a = bytes(_a);
-    bytes memory b = bytes(_b);
-    if (a.length != b.length)
-      return false;
-    // @todo unroll this loop
-    for (uint i = 0; i < a.length; i ++)
-      if (a[i] != b[i])
-        return false;
-    return true;
   }
 
 }

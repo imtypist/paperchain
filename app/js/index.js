@@ -70,6 +70,13 @@ $(function(){
 	 * event:跳转登录页
 	 */
 	$(document).on("click","#restoreJumpToLogin",function(){
+		var addr = $("#restore_input").val();
+		if(!checkAddr(addr)){
+			alert("address is not correct!");
+			return false;
+		}
+		localStorage.setItem("uid",addr);
+		refresh();
 		slidePage("blackcolor",false,"blueback","vaultPage","unlock","block");
 	});
 	/* position:登陆页面
@@ -152,6 +159,7 @@ $(function(){
 	 * event:点击叉叉返回home页
 	 */
 	$(document).on("click","#profile .topbar iron-icon:eq(0)",function(){
+		enterHomePage();
 		$("#profile").removeClass("iron-selected");
 		$("#home").addClass("iron-selected");
 	});
@@ -399,6 +407,7 @@ $(function(){
 									userInfo.len --;
 								}else{
 									userInfo.paper.push({
+										"index":res[5].toNumber(),
 										"hash":res[1],
 										"title":res[2],
 										"date":transformTimestamp(res[3]),
@@ -528,12 +537,132 @@ $(function(){
             });
 		}
 	});
-	/* position:owner paper page
-	 * event:re-upload paper
+	/* position:owner paper page || guest paper page
+	 * event:show certification
 	 */
 	$(document).on("click",".certificate",function(){
 		var blockNumber = parseInt(userInfo.singlePaper.blockNum);
 		generateCert(userInfo.singlePaper.title,userInfo.username,userInfo.singlePaper.date,blockNumber,web3.eth.getBlock(blockNumber).transactions[0]);
+	});
+	/* position:owner paper page
+	 * event:close cert
+	 */
+	$(document).on("click","#cert_container",function(){
+		$(this).hide();
+	});
+	/* position:guest paper page
+	 * event:back to guest home
+	 */
+	$(document).on("click","#guestsinglepaper iron-icon:eq(0)",function(){
+		$("#guestsinglepaper").removeClass("iron-selected");
+		$("#guest_home").addClass("iron-selected");
+	});
+	/* position:guest home
+	 * event:jump to guest single paper
+	 */
+	$(document).on("click",".guestpaper",function(){
+		userInfo.singlePaper = {};
+		var index = $(this).attr("index");
+		guestPaper.getPaperInfo(parseInt(index)).then(function(res){
+			userInfo.singlePaper = {
+				"index":index,
+				"filehash":res[1],
+				"title":res[2],
+				"date":transformTimestamp(res[3]),
+				"blockNum":res[4]
+			};
+			avalon.scan();
+			$("#guest_home").removeClass("iron-selected");
+			$("#guestsinglepaper").addClass("iron-selected");
+		});
+	});
+	/* position:guest single paper
+	 * event:sendTx
+	 */
+	$(document).on("click","#sendTx",function(){
+		user.query(session,address).then(function(res){
+			if(!res){
+				alert("you must login first!");
+				return false;
+			}
+			var price = parseInt($("#tx-price").val());
+			if (price <= 0){
+				alert("price must be positive number!");
+				return false;
+			}
+			user.getMyInfo(session,address).then(function(info){
+				if(parseInt(info[1]) < price){
+					alert("wallet is not enough!");
+					return false;
+				}
+				user.paperTx(session,address,userInfo.address,price,userInfo.singlePaper.index,userInfo.singlePaper.filehash,{gas:500000}).then(function(res){
+					waitForTx(res.transactionHash,function(){
+						alert("tx have sent!");
+						$("#tx-price").val("");
+					});
+				});
+			});
+		});
+	});
+	/* position:profile page
+	 * event:approve tx
+	 */
+	$(document).on("click","#approveTx",function(){
+		user.doneTx(session,address,userInfo.sell-1,true,{gas:500000}).then(function(res){
+			waitForTx(res.transactionHash,function(){
+				getSinglePaper(parseInt($("#approveTx").attr("index")));
+				user.getOtherUserInfo(userInfo.txInfo.from).then(function(res){
+					guestPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: res[0]});
+					guestPaper.addPaper(userInfo.txInfo.from,userInfo.username,userInfo.singlePaper.filehash,userInfo.singlePaper.title,true,{gas:500000}).then(function(res){
+						waitForTx(res.transactionHash,function(){
+							contractOfPaper.deletePaper(address,userInfo.txInfo.index,{gas:500000}).then(function(res){
+								// do nothing
+								alert("doneTx");
+								userInfo.sell--;
+								if(userInfo.sell > 0){
+									user.getTx(session,address,userInfo.sell-1).then(function(res){
+										userInfo.txInfo = {
+											"from":res[0],
+											"paper":res[1],
+											"price":res[2],
+											"date":transformTimestamp(res[3]),
+											"index":parseInt(res[4])
+										};
+									});
+								}else{
+									userInfo.txInfo = {};
+								}
+								avalon.scan();
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+	/* position:profile page
+	 * event:refuse tx
+	 */
+	$(document).on("click","#refuseTx",function(){
+		user.doneTx(session,address,userInfo.sell-1,false,{gas:500000}).then(function(res){
+			waitForTx(res.transactionHash,function(){
+				userInfo.sell--;
+				if(userInfo.sell > 0){
+					user.getTx(session,address,userInfo.sell-1).then(function(res){
+						userInfo.txInfo = {
+							"from":res[0],
+							"paper":res[1],
+							"price":res[2],
+							"date":transformTimestamp(res[3]),
+							"index":parseInt(res[4])
+						};
+					});
+				}else{
+					userInfo.txInfo = {};
+				}
+				avalon.scan();
+			});
+		});
 	});
 	/* position:unknow
 	 */
@@ -679,7 +808,6 @@ function waitForTx(res,func){
 
 function editMyInfo(){
 	user.editMyInfo(session,address,$("#profile_email").val(),userInfo.hash,$("#profile_bio").val(),$("#profile_location").val(),{gas:500000}).then(function(res){
-	    alert("modify success!");
 	    waitForTx(res.transactionHash,function(){
 	    	// do nothing
 	    });
@@ -729,6 +857,7 @@ function enterHomePage(){
 				});
 			});
 			userInfo.paper = [];
+			userInfo.len = 0;
 		}else{
 			contractOfPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: paper});
 			getPaperList();
@@ -736,10 +865,18 @@ function enterHomePage(){
 		userInfo.sell = info[2].toNumber();
 		userInfo.address = address;
 		if(userInfo.sell > 0){
-			user.txList(address).then(function(res){
-				userInfo.txInfo = res[userInfo.sell-1];
-				console.log(userInfo.txInfo);
+			user.getTx(session,address,userInfo.sell-1).then(function(res){
+				userInfo.txInfo = {
+					"from":res[0],
+					"paper":res[1],
+					"price":res[2],
+					"date":transformTimestamp(res[3]),
+					"index":parseInt(res[4])
+				};
+				avalon.scan();
 			});
+		}else{
+			userInfo.txInfo = {};
 		}
 		userInfo.wallet = info[1].toNumber();
 		userInfo.username = info[3];
