@@ -15640,7 +15640,7 @@ c0,4.1,3.3,7.5,7.5,7.5c4.1,0,7.5-3.3,7.5-7.5c0-2.6-1.4-4.9-3.4-6.3c7.4,1,11,4.9,
                                                 </div>
                                                 <template is="dom-if" class="style-scope ac-avatar"></template>
                                             </ac-avatar>
-                                            <paper-icon-button icon="sc-icons:imgrotate" class="blueback white style-scope ac-profile x-scope paper-icon-button-0" noink="" role="button" tabindex="0" aria-disabled="false">
+                                            <paper-icon-button icon="sc-icons:imgrotate" class="download-paper blueback white style-scope ac-profile x-scope paper-icon-button-0 uploadicon" noink="" role="button" tabindex="0" aria-disabled="false">
                                             <iron-icon id="icon" class="style-scope paper-icon-button x-scope iron-icon-1">
                                                 <svg viewBox="0 0 50 50" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block; width: 100%; height: 100%;" class="style-scope iron-icon">
                                                     <svg x="0px" y="0px" viewBox="0 0 50 50" class="style-scope iron-icon">
@@ -15670,8 +15670,9 @@ c0,4.1,3.3,7.5,7.5,7.5c4.1,0,7.5-3.3,7.5-7.5c0-2.6-1.4-4.9-3.4-6.3c7.4,1,11,4.9,
                                 <div class="profilecontent style-scope ac-profile">
                                     <div class="whitespace style-scope ac-profile"></div>
                                     <div class="whitespace style-scope ac-profile"></div>
-                                    <paper-button class="whiteback bold downbtns style-scope ac-profile x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">get paper certification</paper-button>
-                                    <paper-button class="blueback white bold downbtns style-scope ac-profile x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">re-upload paper</paper-button>
+                                    <paper-button class="certificate blueback white bold downbtns style-scope ac-profile x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">certification</paper-button>
+                                    <input type="file" id="re-uploadpaper" name="" style="display: none;">
+                                    <paper-button id="re-uploadbutton" class="blueback white bold downbtns style-scope ac-profile x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">re-upload paper</paper-button>
                                     <template is="dom-if" class="style-scope ac-profile"></template>
                                     <iron-collapse class="collapserz vertic centercenter style-scope ac-profile iron-collapse-closed x-scope iron-collapse-0" id="deletemyvaultcollapser" role="group" aria-hidden="true" aria-expanded="false" style="transition-property: max-height; transition-duration: 0s; max-height: 0px;">
                                         <div class="vertic centercenter vaultdeleter style-scope ac-profile">
@@ -15692,9 +15693,9 @@ c0,4.1,3.3,7.5,7.5,7.5c4.1,0,7.5-3.3,7.5-7.5c0-2.6-1.4-4.9-3.4-6.3c7.4,1,11,4.9,
                                     </iron-collapse>
                                 </div>
                                 <div class="fivespace style-scope ac-profile"></div>
-                                <paper-button ms-if="singlePaper.isPublic == false" class="redback white bold downbtns style-scope ac-profile x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">make public</paper-button>
-                                    <paper-button ms-if="singlePaper.isPublic == true" class="redback white bold downbtns style-scope ac-profile x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">make private</paper-button>
-                                    <paper-button class="redback white bold downbtns style-scope ac-profile x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Delete this paper</paper-button>
+                                <paper-button id="makepublic" ms-if="singlePaper.isPublic == false" class="redback white bold downbtns style-scope ac-profile x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">make public</paper-button>
+                                    <paper-button id="makeprivate" ms-if="singlePaper.isPublic == true" class="redback white bold downbtns style-scope ac-profile x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">make private</paper-button>
+                                    <paper-button id="deletethispaper" class="redback white bold downbtns style-scope ac-profile x-scope paper-button-0" noink="" role="button" tabindex="0" animated="" aria-disabled="false" elevation="0">Delete this paper</paper-button>
                                     <div class="fivespace style-scope ac-profile"></div>
                             </div>
                         </neon-animatable>

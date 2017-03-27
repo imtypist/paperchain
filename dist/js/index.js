@@ -461,8 +461,79 @@ $(function(){
 	 * event:back to home
 	 */
 	$(document).on("click","#singlepaper iron-icon:eq(0)",function(){
+		getPaperList();
 		$("#singlepaper").removeClass("iron-selected");
 		$("#home").addClass("iron-selected");
+	});
+	/* position:owner paper page
+	 * event:download paper
+	 */
+	$(document).on("click",".download-paper",function(){
+		window.open(EmbarkJS.Storage.getUrl(userInfo.singlePaper.filehash));
+	});
+	/* position:owner paper page
+	 * event:delete paper
+	 */
+	$(document).on("click","#deletethispaper",function(){
+		contractOfPaper.deletePaper(address,userInfo.singlePaper.filehash).then(function(res){
+			waitForTx(res.transactionHash,function(){
+				alert("deleted!");
+				$("#singlepaper iron-icon:eq(0)").click();
+			});
+		});
+	})
+	/* position:owner paper page
+	 * event:makepublic
+	 */
+	$(document).on("click","#makepublic",function(){
+		userInfo.singlePaper.isPublic = true;
+		contractOfPaper.editPaper(address,userInfo.singlePaper.index,userInfo.username,userInfo.singlePaper.filehash,userInfo.singlePaper.title,true,{gas:500000}).then(function(res){
+			waitForTx(res.transactionHash,function(){
+				getSinglePaper(userInfo.singlePaper.index);
+			});
+		});
+	});
+	/* position:owner paper page
+	 * event:makeprivate
+	 */
+	$(document).on("click","#makeprivate",function(){
+		userInfo.singlePaper.isPublic = false;
+		contractOfPaper.editPaper(address,userInfo.singlePaper.index,userInfo.username,userInfo.singlePaper.filehash,userInfo.singlePaper.title,false,{gas:500000}).then(function(res){
+			waitForTx(res.transactionHash,function(){
+				getSinglePaper(userInfo.singlePaper.index);
+			});
+		});
+	});
+	/* position:owner paper page
+	 * event:re-upload paper
+	 */
+	$(document).on("click","#re-uploadbutton",function(){
+		$("#re-uploadpaper").click();
+	});
+	/* position:owner paper page
+	 * event:re-upload paper
+	 */
+	$(document).on("change","#re-uploadpaper",function(){
+		var url = $("#re-uploadpaper");
+		if(url.val() != ""){
+          	EmbarkJS.Storage.uploadFile(url).then(function(hash) {
+              userInfo.singlePaper.filehash = hash;
+              contractOfPaper.editPaper(address,userInfo.singlePaper.index,userInfo.username,userInfo.singlePaper.filehash,userInfo.singlePaper.title,userInfo.singlePaper.isPublic,{gas:500000}).then(function(res){
+				  waitForTx(res.transactionHash,function(){
+				  	  url.val("");
+					  getSinglePaper(userInfo.singlePaper.index);
+				  });
+			  });
+              avalon.scan();
+            });
+		}
+	});
+	/* position:owner paper page
+	 * event:re-upload paper
+	 */
+	$(document).on("click",".certificate",function(){
+		var blockNumber = parseInt(userInfo.singlePaper.blockNum);
+		generateCert(userInfo.singlePaper.title,userInfo.username,userInfo.singlePaper.date,blockNumber,web3.eth.getBlock(blockNumber).transactions[0]);
 	});
 	/* position:unknow
 	 */
@@ -683,6 +754,21 @@ function enterHomePage(){
 		}
 		userInfo.bio = info[7];
 		userInfo.location = info[8];
+		avalon.scan();
+	});
+}
+
+function getSinglePaper(index){
+	userInfo.singlePaper = {};
+	contractOfPaper.getAllPaperInfo(address,index).then(function(res){
+		userInfo.singlePaper = {
+			"index":index,
+			"filehash":res[1],
+			"title":res[2],
+			"date":transformTimestamp(res[3]),
+			"isPublic":res[4],
+			"blockNum":res[5]
+		};
 		avalon.scan();
 	});
 }
