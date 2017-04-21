@@ -3,7 +3,8 @@ var session;
 refresh();
 var contractOfPaper;
 var guestPaper;
-EmbarkJS.Storage.setProvider('ipfs',{server: 'localhost', port: '5001'});
+var destIP = "192.168.1.104"; // server ip
+EmbarkJS.Storage.setProvider('ipfs',{server: destIP, port: '5001'});
 
 var userInfo = avalon.define({
 	$id:"userInfo",
@@ -121,19 +122,17 @@ $(function(){
 		var button = $(this).parent();
 		button.attr("disabled","disabled");
 		user.login(address,phone,sm3(password),session,{gas:500000}).then(function(res){
-			waitForTx(res.transactionHash,function(){
-				user.query(session,address).then(function(res){
-					if(res == true){
-						alert("login success");
-						$("#vault").removeClass("iron-selected");
-						$("#home").addClass("iron-selected");
-						// load info
-						enterHomePage();
-					}else{
-						alert("login false");
-					}
-					button.removeAttr("disabled");
-				});
+			user.query(session,address).then(function(res){
+				if(res == true){
+					alert("login success");
+					$("#vault").removeClass("iron-selected");
+					$("#home").addClass("iron-selected");
+					// load info
+					enterHomePage();
+				}else{
+					alert("login false");
+				}
+				button.removeAttr("disabled");
 			});
 		});
 	});
@@ -149,7 +148,6 @@ $(function(){
 	 */
 	$(document).on("click","#logout",function(){
 		user.logout(session,address).then(function(res){
-			// no waitForTx
 			$("#profile").removeClass("iron-selected");
 			$("#intro").addClass("iron-selected");
 			slidePage("blackcolor",true,"yellowback","vaultPage","welcome","none","blueback");
@@ -176,7 +174,7 @@ $(function(){
 		var url = $("#avatarupload");
 		if(url.val() != ""){
           	EmbarkJS.Storage.uploadFile(url).then(function(hash) {
-              var ipfsUrl = EmbarkJS.Storage.getUrl(hash);
+              var ipfsUrl = EmbarkJS.Storage.getUrl(destIP,hash);
               userInfo.avatar = ipfsUrl;
               userInfo.hash = hash;
               avalon.scan();
@@ -219,7 +217,6 @@ $(function(){
 			return false;
 		}
 		user.modifyPasswd(session,address,sm3(oldPasswd),sm3(newPasswd)).then(function(res){
-			// no waitForTx
 			$("#profile").removeClass("iron-selected");
 			$("#vault").addClass("iron-selected");
 			$("#profile_old_passwd").val("");
@@ -273,20 +270,18 @@ $(function(){
 		$("#createnew ac-password:eq(0)").css("display","none");
 		$("#createnew .loaderinit:eq(0)").html($("#loader_container").html());
 		user.register(address,sm3(firstPasswd),name,email,phone,{gas:500000}).then(function(res){
-			waitForTx(res.transactionHash,function(){
-				user.users(address).then(function(res){
-					if(res[3] == ""){
-						alert("register false");
-						console.log(address);
-						localStorage.removeItem("uid");
-						refresh();
-					}else{
-						alert("register success");
-						slidePage("blackcolor",false,"blueback","vaultPage","unlock","block");
-					}
-					$("#createnew .loaderinit:eq(0)").html("");
-					$("#createnew ac-password:eq(0)").css("display","block");
-				});
+			user.users(address).then(function(res){
+				if(res[3] == ""){
+					alert("register false");
+					console.log(address);
+					localStorage.removeItem("uid");
+					refresh();
+				}else{
+					alert("register success");
+					slidePage("blackcolor",false,"blueback","vaultPage","unlock","block");
+				}
+				$("#createnew .loaderinit:eq(0)").html("");
+				$("#createnew ac-password:eq(0)").css("display","block");
 			});
 		});
 	});
@@ -312,15 +307,13 @@ $(function(){
 		if(coin == NaN || coin <= 0) return false;
 		$("#addcoin").attr("disabled","disabled");
 		user.recharge(session,address,coin).then(function(res){
-			waitForTx(res.transactionHash,function(){
-				user.users(address).then(function(res){
-					userInfo.wallet = res[1];
-					avalon.scan();
-					$("#coin_input").val("");
-					$("#addcoin").removeAttr("disabled");
-					$("#walletview").removeClass("iron-selected");
-					$("#home").addClass("iron-selected");
-				});
+			user.users(address).then(function(res){
+				userInfo.wallet = res[1];
+				avalon.scan();
+				$("#coin_input").val("");
+				$("#addcoin").removeAttr("disabled");
+				$("#walletview").removeClass("iron-selected");
+				$("#home").addClass("iron-selected");
 			});
 		});
 	});
@@ -365,19 +358,17 @@ $(function(){
 		url.after($(insert));
 		if(url.val() != ""){
           	EmbarkJS.Storage.uploadFile(url).then(function(hash) {
-              contractOfPaper.addPaper(address,userInfo.username,hash,$("#privatekeyinput input:eq(0)").val(),$("#isPublic").is(":checked"),{gas:500000}).then(function(res){
-              	waitForTx(res.transactionHash,function(){
-              		getPaperList();
-              		url.val("");
-              		$("#temp_load").remove();
-              		$("#uploadpaper").show();
+              	contractOfPaper.addPaper(address,userInfo.username,hash,$("#privatekeyinput input:eq(0)").val(),$("#isPublic").is(":checked"),{gas:500000}).then(function(res){
+	          		getPaperList();
+	          		url.val("");
+	          		$("#temp_load").remove();
+	          		$("#uploadpaper").show();
 					document.getElementById("isPublic").checked = false;
-              		$("#privatekeyinput input:eq(0)").val("");
-              		$("#vault").removeClass("iron-selected");
-              		$("#importfile").removeClass("iron-selected");
-              		$("#home").addClass("iron-selected");
-              	});
-              });
+	          		$("#privatekeyinput input:eq(0)").val("");
+	          		$("#vault").removeClass("iron-selected");
+	          		$("#importfile").removeClass("iron-selected");
+	          		$("#home").addClass("iron-selected");
+	          	});
             });
 		}
 	});
@@ -423,7 +414,7 @@ $(function(){
 				var avatar = res[6];
 				if(avatar != ""){
 					userInfo.hash = avatar;
-					userInfo.avatar = EmbarkJS.Storage.getUrl(avatar);
+					userInfo.avatar = EmbarkJS.Storage.getUrl(destIP,avatar);
 				}else{
 					userInfo.avatar = "img/unnamed.jpg";
 				}
@@ -478,17 +469,15 @@ $(function(){
 	 * event:download paper
 	 */
 	$(document).on("click",".download-paper",function(){
-		window.open(EmbarkJS.Storage.getUrl(userInfo.singlePaper.filehash));
+		window.open(EmbarkJS.Storage.getUrl(destIP,userInfo.singlePaper.filehash));
 	});
 	/* position:owner paper page
 	 * event:delete paper
 	 */
 	$(document).on("click","#deletethispaper",function(){
 		contractOfPaper.deletePaper(address,userInfo.singlePaper.filehash).then(function(res){
-			waitForTx(res.transactionHash,function(){
-				alert("deleted!");
-				$("#singlepaper iron-icon:eq(0)").click();
-			});
+			alert("deleted!");
+			$("#singlepaper iron-icon:eq(0)").click();
 		});
 	})
 	/* position:owner paper page
@@ -497,9 +486,7 @@ $(function(){
 	$(document).on("click","#makepublic",function(){
 		userInfo.singlePaper.isPublic = true;
 		contractOfPaper.editPaper(address,userInfo.singlePaper.index,userInfo.username,userInfo.singlePaper.filehash,userInfo.singlePaper.title,true,{gas:500000}).then(function(res){
-			waitForTx(res.transactionHash,function(){
-				getSinglePaper(userInfo.singlePaper.index);
-			});
+			getSinglePaper(userInfo.singlePaper.index);
 		});
 	});
 	/* position:owner paper page
@@ -508,9 +495,7 @@ $(function(){
 	$(document).on("click","#makeprivate",function(){
 		userInfo.singlePaper.isPublic = false;
 		contractOfPaper.editPaper(address,userInfo.singlePaper.index,userInfo.username,userInfo.singlePaper.filehash,userInfo.singlePaper.title,false,{gas:500000}).then(function(res){
-			waitForTx(res.transactionHash,function(){
-				getSinglePaper(userInfo.singlePaper.index);
-			});
+			getSinglePaper(userInfo.singlePaper.index);
 		});
 	});
 	/* position:owner paper page
@@ -528,10 +513,8 @@ $(function(){
           	EmbarkJS.Storage.uploadFile(url).then(function(hash) {
               userInfo.singlePaper.filehash = hash;
               contractOfPaper.editPaper(address,userInfo.singlePaper.index,userInfo.username,userInfo.singlePaper.filehash,userInfo.singlePaper.title,userInfo.singlePaper.isPublic,{gas:500000}).then(function(res){
-				  waitForTx(res.transactionHash,function(){
-				  	  url.val("");
-					  getSinglePaper(userInfo.singlePaper.index);
-				  });
+			  	  url.val("");
+				  getSinglePaper(userInfo.singlePaper.index);
 			  });
               avalon.scan();
             });
@@ -596,10 +579,8 @@ $(function(){
 					return false;
 				}
 				user.paperTx(session,address,userInfo.address,price,userInfo.singlePaper.index,userInfo.singlePaper.filehash,{gas:500000}).then(function(res){
-					waitForTx(res.transactionHash,function(){
-						alert("tx have sent!");
-						$("#tx-price").val("");
-					});
+					alert("tx have sent!");
+					$("#tx-price").val("");
 				});
 			});
 		});
@@ -609,33 +590,29 @@ $(function(){
 	 */
 	$(document).on("click","#approveTx",function(){
 		user.doneTx(session,address,userInfo.sell-1,true,{gas:500000}).then(function(res){
-			waitForTx(res.transactionHash,function(){
-				getSinglePaper(parseInt($("#approveTx").attr("index")));
-				user.getOtherUserInfo(userInfo.txInfo.from).then(function(res){
-					guestPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: res[0]});
-					guestPaper.addPaper(userInfo.txInfo.from,userInfo.username,userInfo.singlePaper.filehash,userInfo.singlePaper.title,true,{gas:500000}).then(function(res){
-						waitForTx(res.transactionHash,function(){
-							contractOfPaper.deletePaper(address,userInfo.txInfo.index,{gas:500000}).then(function(res){
-								// do nothing
-								alert("doneTx");
-								userInfo.sell--;
-								if(userInfo.sell > 0){
-									user.getTx(session,address,userInfo.sell-1).then(function(res){
-										userInfo.txInfo = {
-											"from":res[0],
-											"paper":res[1],
-											"price":res[2],
-											"date":transformTimestamp(res[3]),
-											"index":parseInt(res[4])
-										};
-									});
-								}else{
-									userInfo.txInfo = {};
-								}
-								avalon.scan();
-							});
+			getSinglePaper(parseInt($("#approveTx").attr("index")));
+			user.getOtherUserInfo(userInfo.txInfo.from).then(function(res){
+				guestPaper = new EmbarkJS.Contract({abi: PaperCopyright.abi, address: res[0]});
+				guestPaper.addPaper(userInfo.txInfo.from,userInfo.username,userInfo.singlePaper.filehash,userInfo.singlePaper.title,true,{gas:500000}).then(function(res){
+						contractOfPaper.deletePaper(address,userInfo.txInfo.index,{gas:500000}).then(function(res){
+							// do nothing
+							alert("doneTx");
+							userInfo.sell--;
+							if(userInfo.sell > 0){
+								user.getTx(session,address,userInfo.sell-1).then(function(res){
+									userInfo.txInfo = {
+										"from":res[0],
+										"paper":res[1],
+										"price":res[2],
+										"date":transformTimestamp(res[3]),
+										"index":parseInt(res[4])
+									};
+								});
+							}else{
+								userInfo.txInfo = {};
+							}
+							avalon.scan();
 						});
-					});
 				});
 			});
 		});
@@ -645,23 +622,21 @@ $(function(){
 	 */
 	$(document).on("click","#refuseTx",function(){
 		user.doneTx(session,address,userInfo.sell-1,false,{gas:500000}).then(function(res){
-			waitForTx(res.transactionHash,function(){
-				userInfo.sell--;
-				if(userInfo.sell > 0){
-					user.getTx(session,address,userInfo.sell-1).then(function(res){
-						userInfo.txInfo = {
-							"from":res[0],
-							"paper":res[1],
-							"price":res[2],
-							"date":transformTimestamp(res[3]),
-							"index":parseInt(res[4])
-						};
-					});
-				}else{
-					userInfo.txInfo = {};
-				}
-				avalon.scan();
-			});
+			userInfo.sell--;
+			if(userInfo.sell > 0){
+				user.getTx(session,address,userInfo.sell-1).then(function(res){
+					userInfo.txInfo = {
+						"from":res[0],
+						"paper":res[1],
+						"price":res[2],
+						"date":transformTimestamp(res[3]),
+						"index":parseInt(res[4])
+					};
+				});
+			}else{
+				userInfo.txInfo = {};
+			}
+			avalon.scan();
 		});
 	});
 	/* position:unknow
@@ -795,22 +770,8 @@ function generateUid(){
 	refresh();
 }
 
-function waitForTx(res,func){
-	var tx = setInterval(function(){
-		var currentBlock = web3.eth.blockNumber;
-        var txBlock = web3.eth.getTransaction(res).blockNumber;
-        if(txBlock != null && currentBlock > txBlock){
-            clearInterval(tx);
-            func();
-		}
-	},1000);
-}
-
 function editMyInfo(){
 	user.editMyInfo(session,address,$("#profile_email").val(),userInfo.hash,$("#profile_bio").val(),$("#profile_location").val(),{gas:500000}).then(function(res){
-	    waitForTx(res.transactionHash,function(){
-	    	// do nothing
-	    });
 	});
 }
 
@@ -851,9 +812,6 @@ function enterHomePage(){
 			PaperCopyright.deploy([address],{gas:4700000}).then(function(res){
 				contractOfPaper = res;
 				user.setPaperAddr(session,address,contractOfPaper.address,{gas:500000}).then(function(res){
-					waitForTx(res.transactionHash,function(){
-						// do nothing
-					});
 				});
 			});
 			userInfo.paper = [];
@@ -885,7 +843,7 @@ function enterHomePage(){
 		var avatar = info[6];
 		if(avatar != ""){
 			userInfo.hash = avatar;
-			userInfo.avatar = EmbarkJS.Storage.getUrl(avatar);
+			userInfo.avatar = EmbarkJS.Storage.getUrl(destIP,avatar);
 		}else{
 			userInfo.avatar = "img/unnamed.jpg";
 		}
