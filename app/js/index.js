@@ -124,13 +124,13 @@ $(function(){
 		user.login(address,phone,sm3(password),session,{gas:500000}).then(function(res){
 			user.query(session,address).then(function(res){
 				if(res == true){
-					alert("login success");
+					alert("登录成功!");
 					$("#vault").removeClass("iron-selected");
 					$("#home").addClass("iron-selected");
 					// load info
 					enterHomePage();
 				}else{
-					alert("login false");
+					alert("登录失败!");
 				}
 				button.removeAttr("disabled");
 			});
