@@ -3,7 +3,7 @@ session = null;
 refresh();
 contractOfPaper = null;
 guestPaper = null;
-destIP = "192.168.137.101"; // server ip
+destIP = "localhost"; // server ip
 EmbarkJS.Storage.setProvider('ipfs',{server: destIP, port: '5001'});
 
 var userInfo = avalon.define({
@@ -105,6 +105,41 @@ $(function(){
 	/* position:登陆页面
 	 * event:进入home页面
 	 */
+	$(document).on("click","#getcode",function(){
+		var button = $(this);
+		var phone = $("#login_phone").val();
+		if(!checkPhone(phone)){
+			alert("enter your phone");
+			return false;
+		}
+		button.attr("disabled","disabled");
+		// call message API
+		$.ajax({
+			url: "http://" + destIP + ":8000/sendMsg/" + phone + "/",
+			cache: false,
+			contentType: "application/json",
+			dataType: "json",
+			error: function(e){
+				alert("获取失败，请重试");
+			},
+			success: function(data){
+				console.log(data);
+				alert(data.Message);
+			},
+			complete: function(){
+				var times = 59;
+				var a = setInterval(function(){
+					button.text(times+"s后可重新获取");
+					times -= 1;
+					if(times == 0){
+						clearInterval(a);
+						button.text("获取验证码");
+						button.removeAttr("disabled");
+					}
+				},1000);
+			}
+		});
+	});
 	$(document).on("click","#unlock iron-icon:eq(1)",function(){
 		var phone = $("#login_phone").val();
 		if(!checkPhone(phone)){
@@ -116,6 +151,26 @@ $(function(){
 			alert("enter your password");
 			return false;
 		}
+		var code = $("#message-verify").val();
+		var verification = true;
+		$.ajax({
+			url: "http://" + destIP + ":8000/verify/" + phone + "/" + code + "/",
+			cache: false,
+			async:false,
+			contentType: "application/json",
+			dataType: "json",
+			error: function(e){
+				alert("验证码错误");
+				verification = false;
+			},
+			success: function(data){
+				if(data.result == false){
+					alert("验证码错误");
+					verification = false;
+				}
+			}
+		});
+		if(verification == false) return false;
 		var now = new Date();
 		localStorage.setItem("session",sm3(now.getTime().toString()));
 		refresh();
@@ -475,7 +530,7 @@ $(function(){
 	 * event:delete paper
 	 */
 	$(document).on("click","#deletethispaper",function(){
-		contractOfPaper.deletePaper(address,userInfo.singlePaper.filehash).then(function(res){
+		contractOfPaper.deletePaper(address,userInfo.singlePaper.index,{gas:500000}).then(function(res){
 			alert("deleted!");
 			$("#singlepaper iron-icon:eq(0)").click();
 		});
