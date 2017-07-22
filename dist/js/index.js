@@ -412,18 +412,58 @@ $(function(){
 		$(insert).attr("id","temp_load").html($("#loader_container").html());
 		url.after($(insert));
 		if(url.val() != ""){
+			var papertitle = $("#privatekeyinput input:eq(0)").val();
           	EmbarkJS.Storage.uploadFile(url).then(function(hash) {
-              	contractOfPaper.addPaper(address,userInfo.username,hash,$("#privatekeyinput input:eq(0)").val(),$("#isPublic").is(":checked"),{gas:500000}).then(function(res){
-	          		getPaperList();
-	          		url.val("");
-	          		$("#temp_load").remove();
-	          		$("#uploadpaper").show();
-					document.getElementById("isPublic").checked = false;
-	          		$("#privatekeyinput input:eq(0)").val("");
-	          		$("#vault").removeClass("iron-selected");
-	          		$("#importfile").removeClass("iron-selected");
-	          		$("#home").addClass("iron-selected");
-	          	});
+          		// call paperdetect API
+          		alert("正在进行盗版检测，请稍候...");
+				$.ajax({
+					url: "http://" + destIP + ":8000/paperdetect/" + hash + "/",
+					cache: false,
+					async: false,
+					contentType: "application/json",
+					dataType: "json",
+					error: function(e){
+						alert("盗版检测暂时不能提供服务...");
+						getPaperList();
+		          		url.val("");
+		          		alert("论文版权申明成功！");
+		          		$("#temp_load").remove();
+		          		$("#uploadpaper").show();
+						document.getElementById("isPublic").checked = false;
+		          		$("#privatekeyinput input:eq(0)").val("");
+		          		$("#vault").removeClass("iron-selected");
+		          		$("#importfile").removeClass("iron-selected");
+		          		$("#home").addClass("iron-selected");
+					},
+					success: function(data){
+						var similar = data.similarity;
+						if(similar >= 0.8){
+							alert("您申明的论文《"+papertitle+"》涉及版权问题，检测相似度为"+similar+",不予以申明!");
+							getPaperList();
+			          		url.val("");
+			          		$("#temp_load").remove();
+			          		$("#uploadpaper").show();
+							document.getElementById("isPublic").checked = false;
+			          		$("#privatekeyinput input:eq(0)").val("");
+			          		$("#vault").removeClass("iron-selected");
+			          		$("#importfile").removeClass("iron-selected");
+			          		$("#home").addClass("iron-selected");
+						}else{
+							contractOfPaper.addPaper(address,userInfo.username,hash,papertitle,$("#isPublic").is(":checked"),{gas:500000}).then(function(res){
+				          		getPaperList();
+				          		url.val("");
+				          		alert("论文版权申明成功！");
+				          		$("#temp_load").remove();
+				          		$("#uploadpaper").show();
+								document.getElementById("isPublic").checked = false;
+				          		$("#privatekeyinput input:eq(0)").val("");
+				          		$("#vault").removeClass("iron-selected");
+				          		$("#importfile").removeClass("iron-selected");
+				          		$("#home").addClass("iron-selected");
+				          	});
+						}
+					}
+				});	
             });
 		}
 	});
