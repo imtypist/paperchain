@@ -3,7 +3,7 @@ session = null;
 refresh();
 contractOfPaper = null;
 guestPaper = null;
-destIP = "localhost"; // server ip
+destIP = "192.168.1.100"; // server ip
 EmbarkJS.Storage.setProvider('ipfs',{server: destIP, port: '5001'});
 
 var userInfo = avalon.define({

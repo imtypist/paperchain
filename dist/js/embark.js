@@ -78448,7 +78448,7 @@ var EmbarkJS =
 if (typeof web3 !== 'undefined' && typeof Web3 !== 'undefined') {
 	web3 = new Web3(web3.currentProvider);
 } else if (typeof Web3 !== 'undefined') {
-	web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+	web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.100:8545"));
 }
 web3.eth.defaultAccount = web3.eth.accounts[0];
 
