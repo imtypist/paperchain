@@ -13,3 +13,8 @@
 [https://imtypist.github.io/paperchain](https://imtypist.github.io/paperchain)
 
 ![logo](./paperchain.png)
+
+### related repository
+
+该项目的论文查重服务和短信验证server源码在这个仓库里
+[imtypist/message-server](https://github.com/imtypist/message-server)
